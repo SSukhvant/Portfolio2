@@ -51,7 +51,7 @@ export const SukhvantAICore: React.FC<SukhvantAICoreProps> = ({ onOpen, isOpen, 
             whileHover={{ scale: 1.04 }}
             whileTap={{ scale: 0.96 }}
             aria-label="Open Sukhvant AI Assistant"
-            className={`group relative flex items-center gap-3 px-4 py-2 rounded-full backdrop-blur-xl border transition-all duration-300 ${
+            className={`group relative flex items-center gap-3 backdrop-blur-2xl  transition-all duration-300 ${
               theme === 'dark'
                 ? 'bg-[#050505]/95 border-white/15 hover:border-[#00FF66]/50 shadow-[0_8px_32px_rgba(0,0,0,0.85)]'
                 : 'bg-[#FFFFFF]/95 border-[#E5E7E5] hover:border-[#00A84F]/50 shadow-[0_8px_32px_rgba(0,0,0,0.12)]'
@@ -63,7 +63,7 @@ export const SukhvantAICore: React.FC<SukhvantAICoreProps> = ({ onOpen, isOpen, 
             </div>
 
             {/* Brand / Online Service Label */}
-            <div className="flex flex-col text-left pr-1.5">
+            {/* <div className="flex flex-col text-left pr-1.5">
               <div className="flex items-center gap-1.5">
                 <span className={`font-mono-tech text-[11px] font-semibold tracking-wider transition-colors ${
                   theme === 'dark' ? 'text-white group-hover:text-[#00FF66]' : 'text-[#111111] group-hover:text-[#00873D]'
@@ -77,7 +77,7 @@ export const SukhvantAICore: React.FC<SukhvantAICoreProps> = ({ onOpen, isOpen, 
               }`}>
                 ● ONLINE • v2.6
               </span>
-            </div>
+            </div> */}
           </motion.button>
         </motion.div>
       )}
