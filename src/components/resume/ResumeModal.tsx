@@ -73,8 +73,10 @@ export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose }) => 
           <div className="flex items-center gap-2">
             <a
               id="download-resume-pdf-btn"
-              href="/resume.pdf"
-              download="Sukhvant_Singh_Resume.pdf"
+              href="https://drive.google.com/drive/folders/1KP6Mxwpib_e7xtiCO8haejHgtNziYia7?usp=sharing"
+              target="_blank"
+              rel="noopener noreferrer"
+              title="Download Resume PDF"
               className="bg-[#00FF66] text-black font-semibold px-4 py-1.5 rounded-lg hover:bg-[#00D957] transition-all flex items-center gap-1.5 font-mono text-xs uppercase shadow-[0_0_10px_rgba(0,255,102,0.25)]"
             >
               <Download className="w-3.5 h-3.5" />
