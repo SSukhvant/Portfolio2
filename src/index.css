@@ -1,0 +1,146 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@layer base {
+  :root {
+    --font-mono: 'JetBrains Mono', 'Fira Code', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    --font-sans: 'Inter', 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-serif: 'Newsreader', 'Cormorant Garamond', Georgia, Cambria, 'Times New Roman', Times, serif;
+
+    /* Light Theme (Pure White Canvas) */
+    --bg-page: #FFFFFF;
+    --bg-surface: #FAFAFA;
+    --bg-surface-elevated: #F5F5F5;
+    --bg-surface-hover: #EFEFEF;
+    --border-subtle: #E5E7E5;
+    --border-highlight: rgba(0, 168, 79, 0.3);
+    --text-primary: #111111;
+    --text-secondary: #555555;
+    --text-muted: #777777;
+    --accent-green: #00873D;
+  }
+
+  html.dark {
+    /* Dark Theme (Pure Black Canvas) */
+    --bg-page: #000000;
+    --bg-terminal: #050505;
+    --bg-surface: #080808;
+    --bg-surface-elevated: #0C0C0C;
+    --bg-surface-hover: #141414;
+    --border-subtle: #151A15;
+    --border-highlight: rgba(0, 255, 102, 0.25);
+    --text-primary: #FFFFFF;
+    --text-secondary: #E5E5E5;
+    --text-muted: #8A8A8A;
+    --accent-green: #00FF66;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    background-color: #FFFFFF;
+    color: #111111;
+    overflow-x: hidden;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  html.dark body {
+    background-color: #000000;
+    color: #FFFFFF;
+  }
+
+  .font-mono-tech {
+    font-family: var(--font-mono);
+  }
+
+  .font-editorial-serif {
+    font-family: var(--font-serif);
+  }
+
+  /* Developer scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #D4D4D4;
+    border-radius: 3px;
+  }
+  html.dark ::-webkit-scrollbar-thumb {
+    background: #182018;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #00A84F;
+  }
+  html.dark ::-webkit-scrollbar-thumb:hover {
+    background: #00FF66;
+  }
+}
+
+/* Developer Matrix / Tech Dot Overlays */
+.tech-dot-pattern {
+  background-image: radial-gradient(rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+html.dark .tech-dot-pattern {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+/* Terminal Cursor Blink */
+@keyframes terminalBlink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+.terminal-cursor {
+  animation: terminalBlink 1s infinite;
+}
+
+/* Multicolor AI Core Dynamic Keyframes */
+@keyframes aiNebulaSpin {
+  0% { transform: rotate(0deg) scale(1); }
+  50% { transform: rotate(180deg) scale(1.05); }
+  100% { transform: rotate(360deg) scale(1); }
+}
+
+@keyframes aiOrbitalDrift {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes aiCoreBreathAnimation {
+  0%, 100% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 6px rgba(0, 217, 255, 0.6)) drop-shadow(0 0 12px rgba(139, 92, 246, 0.5));
+  }
+  50% {
+    transform: scale(1.06);
+    filter: drop-shadow(0 0 10px rgba(0, 255, 102, 0.7)) drop-shadow(0 0 18px rgba(217, 70, 239, 0.6));
+  }
+}
+
+.ai-nebula-spin {
+  animation: aiNebulaSpin 8s linear infinite;
+}
+
+.ai-orbital-drift {
+  animation: aiOrbitalDrift 12s linear infinite;
+}
+
+.ai-core-breath {
+  animation: aiCoreBreathAnimation 3.5s ease-in-out infinite;
+}
+
+/* Sticky anchor navigation offset */
+section[id] {
+  scroll-margin-top: 5rem;
+}
