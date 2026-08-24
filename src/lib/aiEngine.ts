@@ -33,15 +33,25 @@ function getLocalKnowledgeAnswer(message: string, conversationHistory: ChatMessa
     return { reply: "Sukhvant's resume covers his experience as a Full Stack Developer and AI Engineer, including Brownfleet, freelance/self-employed work, and his OSCARBLACK frontend internship. His core stack includes React, Next.js, TypeScript, Node.js, PostgreSQL, AI Agents, and MCP. You can open the Resume directly from the portfolio to review the complete resume.", sources: ["Resume", "Experience", "Skills"], source: "verified-knowledge-engine" };
   }
 
+  if (lower.includes('email') || lower.includes('e-mail') || lower.includes('mail address') || lower.includes('contact email')) {
+    return { reply: "Sukhvant's professional email is sukhvantsingh2@gmail.com. You can use it for job opportunities, engineering roles, AI product work, or software development inquiries.", sources: ["Contact"], source: "verified-knowledge-engine" };
+  }
+
+  if (lower.includes('github') || lower.includes('git hub') || lower.includes('repositories') || lower.includes('repos')) {
+    return { reply: "Sukhvant's GitHub profile is github.com/SSukhvant. It contains his public repositories and engineering work.", sources: ["Contact", "GitHub"], source: "verified-knowledge-engine" };
+  }
+
+  if (lower.includes('linkedin') || lower.includes('linked in')) {
+    return { reply: "Sukhvant's LinkedIn profile is linkedin.com/in/sukhvantsingh. You can use it to view his professional profile and connect with him.", sources: ["Contact", "LinkedIn"], source: "verified-knowledge-engine" };
+  }
+
+  if (lower.includes('contact info') || lower.includes('contact information') || lower.includes('how can i contact') || lower.includes('how do i contact') || lower.includes('reach him') || lower.includes('reach sukhvant') || lower.includes('contact sukhvant')) {
+    return { reply: "The easiest way to contact Sukhvant is by email at sukhvantsingh2@gmail.com. His portfolio also provides direct links to his GitHub and LinkedIn profiles.", sources: ["Contact", "GitHub", "LinkedIn"], source: "verified-knowledge-engine" };
+  }
+
   // Timeline intent must run before the generic Brownfleet intent.
   if (lower.includes('after brownfleet') || lower === 'after that' || lower.includes('what did he do after brownfleet') || (lower.includes('after') && previous.includes('brownfleet'))) {
-    const brownfleetIndex = experienceDataIds().indexOf('brownfleet');
-    const nextCompany = brownfleetIndex >= 0 ? experienceDataNames()[brownfleetIndex + 1] : undefined;
-    return {
-      reply: nextCompany ? `After Brownfleet, the next recorded experience in Sukhvant's portfolio is ${nextCompany}. ${experienceDataSummary()[brownfleetIndex + 1]}` : "I don't have a later recorded experience after Brownfleet in the verified portfolio data.",
-      sources: ["Experience"],
-      source: "verified-knowledge-engine"
-    };
+    return { reply: "After Brownfleet, the next recorded experience in Sukhvant's portfolio is his freelance/self-employed full-stack work. He built end-to-end web applications and digital platforms for business, travel, non-profit, e-commerce, and marketing clients.", sources: ["Experience"], source: "verified-knowledge-engine" };
   }
 
   if ((lower.includes('there') || lower.includes('he did') || lower.includes('his work')) && previous.includes('brownfleet')) {
@@ -95,17 +105,16 @@ function getLocalKnowledgeAnswer(message: string, conversationHistory: ChatMessa
   return { reply: "I don't have enough information in Sukhvant's portfolio knowledge to answer that specifically. I can help with his experience, projects, skills, AI engineering, technologies, engineering approach, or potential fit for a role.", sources: ["About", "Experience", "Projects", "Skills"], source: "verified-knowledge-engine" };
 }
 
-// Small helpers keep timeline fallback independent of UI components.
-function experienceDataIds() { return ['freelance', 'brownfleet', 'oscarblack']; }
-function experienceDataNames() { return ['Freelance / Self-employed', 'Brownfleet', 'OSCARBLACK']; }
-function experienceDataSummary() { return ['Sukhvant built end-to-end web applications and digital platforms for business, travel, non-profit, e-commerce, and marketing clients.', 'Sukhvant worked as a Full Stack Developer on AI-powered SaaS and full-stack systems.', 'Sukhvant worked as a Front-End Developer Intern focused on responsive interfaces, frontend optimization and accessibility.']; }
-
 export async function querySukhvantAI(message: string, conversationHistory: ChatMessage[] = []): Promise<AIResponsePayload> {
   const lower = message.toLowerCase().trim();
   const previous = conversationHistory.at(-1)?.content?.toLowerCase() || '';
   const deterministicIntent =
     /^(hi|hello|hey|hii|good morning|good afternoon|good evening|how are you)[!,.\s]*$/i.test(lower) ||
     lower.includes('resume') || lower.includes('cv') || lower.includes('curriculum vitae') ||
+    lower.includes('email') || lower.includes('e-mail') || lower.includes('mail address') || lower.includes('contact email') ||
+    lower.includes('github') || lower.includes('git hub') || lower.includes('repositories') || lower.includes('repos') ||
+    lower.includes('linkedin') || lower.includes('linked in') ||
+    lower.includes('contact info') || lower.includes('contact information') || lower.includes('how can i contact') || lower.includes('how do i contact') || lower.includes('reach him') || lower.includes('reach sukhvant') || lower.includes('contact sukhvant') ||
     lower.includes('professional experience') || lower.includes('work experience') || lower.includes('where did he work') || lower.includes('where did he worked') || lower.includes('where has he worked') || lower.includes('where does he work') || lower.includes('employer') || lower.includes('employers') || lower === 'experience' || lower.includes('worked at') || lower.includes('worked for') || lower.includes('brownfleet') || lower.includes('docker') || lower.includes('container') || lower.includes('why should i hire') || lower.includes('why hire') || lower.includes('why should we hire') || lower.includes('good candidate') || lower.includes('good fit') || lower.includes('fit for this role') || lower.includes('after brownfleet') || lower === 'after that' || (lower.includes('after') && previous.includes('brownfleet')) || ((lower.includes('there') || lower.includes('he did') || lower.includes('his work')) && previous.includes('brownfleet')) || lower.includes('android') || lower.includes('ios') || lower.includes('mobile') || lower.includes('aws') || lower.includes('cloud') || lower.includes('love coding') || lower.includes('like coding') || lower.includes('passionate about coding') || lower.includes('hobby') || lower.includes('hobbies') || lower.includes('favorite food') || lower.includes('favourite food') || lower.includes('football');
 
   if (deterministicIntent) return getLocalKnowledgeAnswer(message, conversationHistory);
