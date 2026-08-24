@@ -28,13 +28,13 @@ export const ExperienceSection: React.FC = () => {
                 <span className="font-medium text-[#111111] dark:text-[#FFFFFF]">BRANCH: main (career)</span>
               </div>
               <span className="text-[10px] text-[#00873D] dark:text-[#00FF66] bg-[#00A84F]/10 dark:bg-[#00FF66]/10 px-2 py-0.5 rounded border border-[#00A84F]/30 dark:border-[#00FF66]/30 font-mono tracking-wider font-medium">
-                HEAD -&gt; c8a41f9
+                HEAD -&gt; {experienceData[0].commitHash}
               </span>
             </div>
 
             <div className="space-y-4 relative pl-2">
               {/* Vertical branch line */}
-              <div className="absolute left-[21px] top-4 bottom-4 w-[1px] bg-[#E5E7E5] dark:bg-[#151A15]"></div>
+              <div className="absolute left-5.25 top-4 bottom-4 w-px bg-[#E5E7E5] dark:bg-[#151A15]"></div>
 
               {experienceData.map((exp) => {
                 const isSelected = selectedExpId === exp.id;

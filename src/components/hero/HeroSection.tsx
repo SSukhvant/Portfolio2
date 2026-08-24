@@ -36,9 +36,9 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             {/* Main Developer Title & Identity */}
             <div className="space-y-3">
               <div className="font-mono-tech text-xs text-[#666666] dark:text-[#8A8A8A] tracking-[0.25em] uppercase flex items-center gap-2">
-                <span className="text-[#00873D] dark:text-[#00FF66]">/</span>
+                <span className="text-[#00873D] dark:text-[#00FF66]">{`<`}</span>
                 <span className="font-semibold text-[#111111] dark:text-[#FFFFFF]">SUKHVANT SINGH</span>
-                <span className="text-[#00873D] dark:text-[#00FF66]">/</span>
+                <span className="text-[#00873D] dark:text-[#00FF66]">{`/>`}</span>
               </div>
               <h1 className="text-4xl sm:text-5xl md:text-6xl font-light tracking-tight text-[#111111] dark:text-[#FFFFFF] leading-[1.1]">
                 Full Stack & <br />

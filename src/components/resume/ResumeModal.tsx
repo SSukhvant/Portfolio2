@@ -44,14 +44,14 @@ export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose }) => 
           </div>
 
           <div className="flex items-center gap-2">
-            <button
+            {/* <button
               id="resume-print-btn"
               onClick={handlePrint}
               title="Print / Save as PDF"
               className="p-1.5 rounded-lg text-[#666666] dark:text-[#8A8A8A] hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/10 transition-colors cursor-pointer"
             >
               <Printer className="w-4 h-4" />
-            </button>
+            </button> */}
             <button
               id="resume-close-btn"
               onClick={onClose}

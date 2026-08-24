@@ -129,9 +129,9 @@ export const currentlyBuildingList: CurrentlyBuildingItem[] = [
 ];
 
 export const socialsData = {
-  email: "sukhvantsingh581998@gmail.com",
-  github: "https://github.com",
-  linkedin: "https://linkedin.com",
+  email: "sukhvantsingh2@gmail.com",
+  github: "https://github.com/SSukhvant",
+  linkedin: "https://www.linkedin.com/in/sukhvantsingh",
   location: "Global / Remote",
   resumePath: "/resume.pdf"
 };

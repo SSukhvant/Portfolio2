@@ -51,7 +51,7 @@ export const SukhvantAICore: React.FC<SukhvantAICoreProps> = ({ onOpen, isOpen, 
             whileHover={{ scale: 1.04 }}
             whileTap={{ scale: 0.96 }}
             aria-label="Open Sukhvant AI Assistant"
-            className={`group relative flex items-center gap-3 backdrop-blur-2xl  transition-all duration-300 ${
+            className={`group relative flex items-center gap-3 backdrop-blur-2xl  transition-all duration-300 rounded-full ${
               theme === 'dark'
                 ? 'bg-[#050505]/95 border-white/15 hover:border-[#00FF66]/50 shadow-[0_8px_32px_rgba(0,0,0,0.85)]'
                 : 'bg-[#FFFFFF]/95 border-[#E5E7E5] hover:border-[#00A84F]/50 shadow-[0_8px_32px_rgba(0,0,0,0.12)]'

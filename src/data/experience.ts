@@ -1,28 +1,11 @@
 import { ExperienceItem } from '../types';
 
 export const experienceData: ExperienceItem[] = [
-  {
-    id: "brownfleet",
-    company: "Brownfleet",
-    role: "Full Stack Developer",
-    period: "Recent / Ongoing",
-    location: "Remote / Hybrid",
-    type: "Full-time",
-    commitHash: "c8a41f9",
-    summary: "Engineering scalable AI-powered SaaS solutions, full-stack web applications, and backend systems utilizing modern TypeScript architectures.",
-    focus: ["Next.js", "TypeScript", "Node.js", "PostgreSQL", "AI-powered SaaS", "APIs", "MCP"],
-    highlights: [
-      "Architected and deployed full-stack SaaS features using Next.js and TypeScript for enterprise reliability.",
-      "Integrated AI workflows, LLM endpoints, and Model Context Protocol (MCP) tooling into production services.",
-      "Designed and optimized PostgreSQL database models and high-throughput REST APIs.",
-      "Collaborated on product engineering, performance profiling, and continuous deployment workflows."
-    ]
-  },
-  {
+    {
     id: "freelance",
     company: "Freelance / Self-employed",
-    role: "Web Developer / Full Stack Developer",
-    period: "Multi-Year Client Engagements",
+    role: "Full Stack Developer",
+    period: "Recent / Ongoing",
     location: "Global Remote",
     type: "Contract",
     commitHash: "7b13e04",
@@ -36,11 +19,28 @@ export const experienceData: ExperienceItem[] = [
     ]
   },
   {
+    id: "brownfleet",
+    company: "Brownfleet",
+    role: "Full Stack Developer",
+    period: "Full Time / 2 Years",
+    location: "Remote / Hybrid",
+    type: "Full-time",
+    commitHash: "c8a41f9",
+    summary: "Engineering scalable AI-powered SaaS solutions, full-stack web applications, and backend systems utilizing modern TypeScript architectures.",
+    focus: ["Next.js", "TypeScript", "Node.js", "PostgreSQL", "AI-powered SaaS", "APIs", "MCP"],
+    highlights: [
+      "Architected and deployed full-stack SaaS features using Next.js and TypeScript for enterprise reliability.",
+      "Integrated AI workflows, LLM endpoints, and Model Context Protocol (MCP) tooling into production services.",
+      "Designed and optimized PostgreSQL database models and high-throughput REST APIs.",
+      "Collaborated on product engineering, performance profiling, and continuous deployment workflows."
+    ]
+  },
+  {
     id: "oscarblack",
     company: "OSCARBLACK",
     role: "Front-End Developer Intern",
     period: "Internship Period",
-    location: "On-site / Hybrid",
+    location: "Remote / Hybrid",
     type: "Internship",
     commitHash: "3f901a2",
     summary: "Focused on crafting high-fidelity responsive user interfaces, modular styling architectures, and cross-browser frontend optimization.",

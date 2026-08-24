@@ -7,7 +7,7 @@ export const profileData = {
   location: "Available Worldwide / Remote",
   status: "Available for opportunities",
   availabilityBadge: "OPERATIONAL / READY FOR CONTRACT & FULL-TIME",
-  contactEmail: "sukhvantsingh581998@gmail.com",
+  contactEmail: "sukhvantsingh2@gmail.com",
   currentYear: 2026,
   terminalPrompt: "sukhvant@workstation:~",
   filesystemRoot: "~/sukhvant",
