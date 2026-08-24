@@ -1,6 +1,6 @@
 import express from "express";
 import path from "path";
-import crypto from "crypto";
+import { createHash } from "crypto";
 import { fileURLToPath } from "url";
 import { createServer as createViteServer } from "vite";
 import { GoogleGenAI } from "@google/genai";
@@ -31,9 +31,7 @@ const ipWindows = new Map<string, { startedAt: number; count: number }>();
 
 function getClientIp(req: express.Request) {
   const forwarded = req.headers["x-forwarded-for"];
-  if (typeof forwarded === "string" && forwarded.length > 0) {
-    return forwarded.split(",")[0].trim();
-  }
+  if (typeof forwarded === "string" && forwarded.length > 0) return forwarded.split(",")[0].trim();
   return req.socket.remoteAddress || "unknown";
 }
 
@@ -43,7 +41,7 @@ function getVisitorId(req: express.Request) {
   if (match?.[1]) return match[1];
 
   const seed = `${getClientIp(req)}:${req.headers["user-agent"] || "unknown"}`;
-  return crypto.createHash("sha256").update(seed).digest("hex");
+  return createHash("sha256").update(seed).digest("hex");
 }
 
 function pruneStores() {
@@ -59,12 +57,10 @@ function pruneStores() {
 function checkIpRateLimit(ip: string) {
   const now = Date.now();
   const current = ipWindows.get(ip);
-
   if (!current || now - current.startedAt >= IP_WINDOW_MS) {
     ipWindows.set(ip, { startedAt: now, count: 1 });
     return true;
   }
-
   if (current.count >= IP_REQUEST_LIMIT) return false;
   current.count += 1;
   return true;
@@ -73,26 +69,15 @@ function checkIpRateLimit(ip: string) {
 function getSession(req: express.Request) {
   const id = getVisitorId(req);
   let session = visitorSessions.get(id);
-
   if (!session || Date.now() - session.createdAt > SESSION_TTL_MS) {
     session = { questions: 0, createdAt: Date.now(), lastRequestAt: 0 };
     visitorSessions.set(id, session);
   }
-
   return session;
 }
 
 function buildVerifiedKnowledge() {
-  return JSON.stringify(
-    {
-      profile: profileData,
-      experience: experienceData,
-      projects: projectsData,
-      skills: skillsRecord,
-    },
-    null,
-    2,
-  );
+  return JSON.stringify({ profile: profileData, experience: experienceData, projects: projectsData, skills: skillsRecord }, null, 2);
 }
 
 const VERIFIED_KNOWLEDGE = buildVerifiedKnowledge();
@@ -111,7 +96,7 @@ CORE RULES:
 5. Do not claim to be Sukhvant. Refer to him as Sukhvant or he/his.
 6. Never expose internal JSON, database-like records, or raw knowledge data to the visitor.
 7. Answer naturally, as if you understand Sukhvant's career rather than reading a keyword list.
-8. Maintain conversational context. Resolve pronouns and follow-ups using previous turns. For example, if the visitor asks about Brownfleet and then asks "what did he do there?", "there" means Brownfleet.
+8. Maintain conversational context. Resolve pronouns and follow-ups using previous turns. If the visitor asks about Brownfleet and then asks "what did he do there?", "there" means Brownfleet.
 9. When a company is asked about, explain the company relationship first, then Sukhvant's role, duration if verified, work performed, technologies, and relevant projects.
 10. When a project is asked about, explain what it is, the problem, Sukhvant's contribution/engineering focus, stack, architecture, and relevant capabilities when those facts are present.
 11. When a technology is asked about, explain where it appears in Sukhvant's verified work rather than merely listing the technology.
@@ -131,8 +116,7 @@ RECRUITER RESPONSE STYLE:
 - Explain relationships between company -> role -> work -> technologies -> projects when relevant
 
 EXAMPLE BEHAVIOR:
-If asked "Tell me about Brownfleet", do NOT answer with only a technology list.
-Explain that Brownfleet was a company where Sukhvant worked as a Full Stack Developer for the verified period, then summarize his responsibilities, AI/SaaS work, backend work, and technologies from the verified data.
+If asked "Tell me about Brownfleet", do NOT answer with only a technology list. Explain that Brownfleet was a company where Sukhvant worked as a Full Stack Developer for the verified period, then summarize his responsibilities, AI/SaaS work, backend work, and technologies from the verified data.
 
 If asked "What did he do there?" after discussing Brownfleet, understand "there" as Brownfleet and answer in that context.
 
@@ -158,23 +142,14 @@ function localFallback(query: string, history: Array<{ role: string; content: st
   }
 
   if (lower.includes("project") || lower.includes("built") || lower.includes("portfolio")) {
-    return {
-      reply: `Sukhvant's featured work includes **AI-Powered SaaS Platform**, **Invoice Builder SaaS**, **CareerLooms**, and commercial client platforms. The projects demonstrate his work across React/Next.js, TypeScript, Node.js, PostgreSQL, Firebase/Supabase, Stripe, AI Agents, and MCP.`,
-      source: "verified-knowledge",
-    };
+    return { reply: `Sukhvant's featured work includes **AI-Powered SaaS Platform**, **Invoice Builder SaaS**, **CareerLooms**, and commercial client platforms. The projects demonstrate his work across React/Next.js, TypeScript, Node.js, PostgreSQL, Firebase/Supabase, Stripe, AI Agents, and MCP.`, source: "verified-knowledge" };
   }
 
   if (lower.includes("skill") || lower.includes("stack") || lower.includes("technology") || lower.includes("tech")) {
-    return {
-      reply: `Sukhvant's core stack covers **React, Next.js, TypeScript, JavaScript, Tailwind CSS, Node.js, Express.js, REST APIs, PostgreSQL, MongoDB, Supabase, MySQL, LLM APIs, AI Agents, MCP, Docker, Git, and Linux/Bash**. These are represented across his projects and professional experience.`,
-      source: "verified-knowledge",
-    };
+    return { reply: `Sukhvant's core stack covers **React, Next.js, TypeScript, JavaScript, Tailwind CSS, Node.js, Express.js, REST APIs, PostgreSQL, MongoDB, Supabase, MySQL, LLM APIs, AI Agents, MCP, Docker, Git, and Linux/Bash**. These are represented across his projects and professional experience.`, source: "verified-knowledge" };
   }
 
-  return {
-    reply: `Sukhvant Singh is a **Full Stack Developer & AI Engineer** focused on modern web applications, SaaS products, and AI-powered experiences. Ask me about his **experience, projects, skills, or AI engineering work**.`,
-    source: "verified-knowledge",
-  };
+  return { reply: `Sukhvant Singh is a **Full Stack Developer & AI Engineer** focused on modern web applications, SaaS products, and AI-powered experiences. Ask me about his **experience, projects, skills, or AI engineering work**.`, source: "verified-knowledge" };
 }
 
 async function startServer() {
@@ -186,24 +161,14 @@ async function startServer() {
   app.post("/api/chat", async (req, res) => {
     pruneStores();
 
-    const { message, conversationHistory = [] } = req.body as {
-      message?: unknown;
-      conversationHistory?: Array<{ role?: unknown; content?: unknown }>;
-    };
-
-    if (typeof message !== "string" || message.trim().length === 0) {
-      return res.status(400).json({ error: "A valid message is required." });
-    }
+    const { message, conversationHistory = [] } = req.body as { message?: unknown; conversationHistory?: Array<{ role?: unknown; content?: unknown }> };
+    if (typeof message !== "string" || message.trim().length === 0) return res.status(400).json({ error: "A valid message is required." });
 
     const cleanMessage = message.trim();
-    if (cleanMessage.length > MAX_MESSAGE_LENGTH) {
-      return res.status(400).json({ error: `Message must be ${MAX_MESSAGE_LENGTH} characters or fewer.` });
-    }
+    if (cleanMessage.length > MAX_MESSAGE_LENGTH) return res.status(400).json({ error: `Message must be ${MAX_MESSAGE_LENGTH} characters or fewer.` });
 
     const ip = getClientIp(req);
-    if (!checkIpRateLimit(ip)) {
-      return res.status(429).json({ error: "Please wait a moment before sending another message." });
-    }
+    if (!checkIpRateLimit(ip)) return res.status(429).json({ error: "Please wait a moment before sending another message." });
 
     const sessionId = getVisitorId(req);
     if (!req.headers.cookie?.includes("sukhvant_ai_session=")) {
@@ -212,18 +177,10 @@ async function startServer() {
 
     const session = getSession(req);
     const now = Date.now();
-
-    if (now - session.lastRequestAt < REQUEST_COOLDOWN_MS) {
-      return res.status(429).json({ error: "Please wait a moment before sending another message." });
-    }
+    if (now - session.lastRequestAt < REQUEST_COOLDOWN_MS) return res.status(429).json({ error: "Please wait a moment before sending another message." });
 
     // Invisible recruiter-facing question limit. Never expose the number to the UI.
-    if (session.questions >= MAX_AI_QUESTIONS) {
-      return res.status(429).json({
-        error: "Limit reached.",
-        limitReached: true,
-      });
-    }
+    if (session.questions >= MAX_AI_QUESTIONS) return res.status(429).json({ error: "Limit reached.", limitReached: true });
 
     const history = Array.isArray(conversationHistory)
       ? conversationHistory
@@ -236,23 +193,9 @@ async function startServer() {
 
     if (apiKey) {
       try {
-        const ai = new GoogleGenAI({
-          apiKey,
-          httpOptions: {
-            headers: { "User-Agent": "sukhvant-portfolio-ai" },
-          },
-        });
-
-        const contents = [
-          ...history,
-          { role: "user", parts: [{ text: cleanMessage }] },
-        ];
-
-        const candidateModels = [
-          process.env.GEMINI_MODEL || "gemini-2.5-flash",
-          "gemini-2.5-flash-lite",
-        ];
-
+        const ai = new GoogleGenAI({ apiKey, httpOptions: { headers: { "User-Agent": "sukhvant-portfolio-ai" } } });
+        const contents: any[] = [...history, { role: "user", parts: [{ text: cleanMessage }] }];
+        const candidateModels = [process.env.GEMINI_MODEL || "gemini-2.5-flash", "gemini-2.5-flash-lite"];
         let generatedReply: string | null = null;
         let successfulModel = "";
 
@@ -261,14 +204,8 @@ async function startServer() {
             const response = await ai.models.generateContent({
               model: modelName,
               contents,
-              config: {
-                systemInstruction: SUKHVANT_KNOWLEDGE_SYSTEM_PROMPT,
-                temperature: 0.45,
-                topP: 0.9,
-                maxOutputTokens: 700,
-              },
+              config: { systemInstruction: SUKHVANT_KNOWLEDGE_SYSTEM_PROMPT, temperature: 0.45, topP: 0.9, maxOutputTokens: 700 },
             });
-
             if (response?.text?.trim()) {
               generatedReply = response.text.trim();
               successfulModel = modelName;
@@ -280,20 +217,15 @@ async function startServer() {
         }
 
         if (generatedReply) {
-          // Count only successful AI answers. Failed upstream calls do not consume the visitor's allowance.
           session.questions += 1;
           session.lastRequestAt = now;
-          return res.json({
-            reply: generatedReply,
-            source: successfulModel,
-          });
+          return res.json({ reply: generatedReply, source: successfulModel });
         }
       } catch (geminiErr) {
         console.warn("Gemini request failed; using verified local fallback:", geminiErr);
       }
     }
 
-    // The local verified engine is also a valid answer, so count it as a completed question.
     const fallback = localFallback(cleanMessage, history);
     session.questions += 1;
     session.lastRequestAt = now;
@@ -301,31 +233,19 @@ async function startServer() {
   });
 
   app.get("/api/health", (_req, res) => {
-    res.json({
-      status: "operational",
-      runtime: "linux-x86_64",
-      service: "sukhvant-portfolio-api",
-      timestamp: new Date().toISOString(),
-    });
+    res.json({ status: "operational", runtime: "linux-x86_64", service: "sukhvant-portfolio-api", timestamp: new Date().toISOString() });
   });
 
   if (process.env.NODE_ENV !== "production") {
-    const vite = await createViteServer({
-      server: { middlewareMode: true },
-      appType: "spa",
-    });
+    const vite = await createViteServer({ server: { middlewareMode: true }, appType: "spa" });
     app.use(vite.middlewares);
   } else {
     const distPath = path.join(process.cwd(), "dist");
     app.use(express.static(distPath));
-    app.get("*", (_req, res) => {
-      res.sendFile(path.join(distPath, "index.html"));
-    });
+    app.get("*", (_req, res) => res.sendFile(path.join(distPath, "index.html")));
   }
 
-  app.listen(PORT, "0.0.0.0", () => {
-    console.log(`Sukhvant Portfolio Dev Server running on http://localhost:${PORT}`);
-  });
+  app.listen(PORT, "0.0.0.0", () => console.log(`Sukhvant Portfolio Dev Server running on http://localhost:${PORT}`));
 }
 
 startServer();
