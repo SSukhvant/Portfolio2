@@ -1,141 +1,43 @@
 import { ChatMessage } from '../types';
 
-export interface AIResponsePayload {
-  reply: string;
-  sources?: string[];
-  source?: string;
-}
+export interface AIResponsePayload { reply: string; sources?: string[]; source?: string; }
 
 function normalizeAIResponse(text: string): string {
-  return text
-    .replace(/```[\s\S]*?```/g, (block) => block.replace(/^```[^\n]*\n?/, '').replace(/```$/, '').trim())
-    .replace(/^#{1,6}\s+/gm, '')
-    .replace(/\*\*(.*?)\*\*/g, '$1')
-    .replace(/__(.*?)__/g, '$1')
-    .replace(/\*(.*?)\*/g, '$1')
-    .replace(/_(.*?)_/g, '$1')
-    .replace(/^\s*[-*]\s+/gm, '• ')
-    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '$1')
-    .replace(/`([^`]+)`/g, '$1')
-    .replace(/\n{3,}/g, '\n\n')
-    .trim();
+  return text.replace(/```[\s\S]*?```/g, b => b.replace(/^```[^\n]*\n?/, '').replace(/```$/, '').trim()).replace(/^#{1,6}\s+/gm, '').replace(/\*\*(.*?)\*\*/g, '$1').replace(/__(.*?)__/g, '$1').replace(/\*(.*?)\*/g, '$1').replace(/_(.*?)_/g, '$1').replace(/^\s*[-*]\s+/gm, '• ').replace(/\[([^\]]+)\]\(([^)]+)\)/g, '$1').replace(/`([^`]+)`/g, '$1').replace(/\n{3,}/g, '\n\n').trim();
 }
 
 function getLocalKnowledgeAnswer(message: string, conversationHistory: ChatMessage[] = []): AIResponsePayload {
   const lower = message.toLowerCase().trim();
   const previous = conversationHistory.at(-1)?.content?.toLowerCase() || '';
-
-  if (/^(hi|hello|hey|hii|good morning|good afternoon|good evening|how are you)[!,.\s]*$/i.test(lower)) {
-    return { reply: "Hi! I'm Sukhvant AI. I can help you quickly review Sukhvant's professional experience, employers, projects, technical skills, AI/MCP work, engineering approach, or resume.", sources: ["About", "Experience", "Projects", "Skills", "Resume"], source: "verified-knowledge-engine" };
-  }
-
-  if (lower.includes('resume') || lower.includes('cv') || lower.includes('curriculum vitae')) {
-    return { reply: "Sukhvant's resume covers his experience as a Full Stack Developer and AI Engineer, including Brownfleet, freelance/self-employed work, and his OSCARBLACK frontend internship. His core stack includes React, Next.js, TypeScript, Node.js, PostgreSQL, AI Agents, and MCP. You can open the Resume directly from the portfolio to review the complete resume.", sources: ["Resume", "Experience", "Skills"], source: "verified-knowledge-engine" };
-  }
-
-  if (lower.includes('email') || lower.includes('e-mail') || lower.includes('mail address') || lower.includes('contact email')) {
-    return { reply: "Sukhvant's professional email is sukhvantsingh2@gmail.com. You can use it for job opportunities, engineering roles, AI product work, or software development inquiries.", sources: ["Contact"], source: "verified-knowledge-engine" };
-  }
-
-  if (lower.includes('github') || lower.includes('git hub') || lower.includes('repositories') || lower.includes('repos')) {
-    return { reply: "Sukhvant's GitHub profile is github.com/SSukhvant. It contains his public repositories and engineering work.", sources: ["Contact", "GitHub"], source: "verified-knowledge-engine" };
-  }
-
-  if (lower.includes('linkedin') || lower.includes('linked in')) {
-    return { reply: "Sukhvant's LinkedIn profile is linkedin.com/in/sukhvantsingh. You can use it to view his professional profile and connect with him.", sources: ["Contact", "LinkedIn"], source: "verified-knowledge-engine" };
-  }
-
-  if (lower.includes('contact info') || lower.includes('contact information') || lower.includes('how can i contact') || lower.includes('how do i contact') || lower.includes('reach him') || lower.includes('reach sukhvant') || lower.includes('contact sukhvant')) {
-    return { reply: "The easiest way to contact Sukhvant is by email at sukhvantsingh2@gmail.com. His portfolio also provides direct links to his GitHub and LinkedIn profiles.", sources: ["Contact", "GitHub", "LinkedIn"], source: "verified-knowledge-engine" };
-  }
-
-  // Timeline intent must run before the generic Brownfleet intent.
-  if (lower.includes('after brownfleet') || lower === 'after that' || lower.includes('what did he do after brownfleet') || (lower.includes('after') && previous.includes('brownfleet'))) {
-    return { reply: "After Brownfleet, the next recorded experience in Sukhvant's portfolio is his freelance/self-employed full-stack work. He built end-to-end web applications and digital platforms for business, travel, non-profit, e-commerce, and marketing clients.", sources: ["Experience"], source: "verified-knowledge-engine" };
-  }
-
-  if ((lower.includes('there') || lower.includes('he did') || lower.includes('his work')) && previous.includes('brownfleet')) {
-    return { reply: "At Brownfleet, Sukhvant worked as a Full Stack Developer for the recorded 2-year full-time period. His work included architecting SaaS features with Next.js and TypeScript, integrating AI workflows, LLM endpoints and MCP tooling, designing PostgreSQL models and REST APIs, and contributing to product engineering, performance profiling and deployment workflows.", sources: ["Brownfleet Experience", "AI Engineering"], source: "verified-knowledge-engine" };
-  }
-
-  if (lower.includes('brownfleet')) {
-    return { reply: "Brownfleet was a company where Sukhvant worked as a Full Stack Developer for the recorded 2-year full-time period. His work focused on scalable AI-powered SaaS solutions and full-stack web applications. He worked with Next.js, TypeScript, Node.js, PostgreSQL, APIs, AI workflows, LLM endpoints, and Model Context Protocol (MCP). His responsibilities included building SaaS features, integrating AI and MCP tooling into production services, designing PostgreSQL models and REST APIs, and contributing to product engineering and performance work.", sources: ["Brownfleet Experience", "AI Engineering"], source: "verified-knowledge-engine" };
-  }
-
-  if (lower.includes('professional experience') || lower.includes('work experience') || lower.includes('where did he work') || lower.includes('where did he worked') || lower.includes('where has he worked') || lower.includes('where does he work') || lower.includes('employer') || lower.includes('employers') || lower === 'experience' || lower.includes('worked at') || lower.includes('worked for')) {
-    return { reply: "Yes. Sukhvant has professional experience across three recorded engagements: Brownfleet as a Full Stack Developer, freelance/self-employed full-stack work, and an OSCARBLACK frontend internship. His experience spans production web applications, SaaS, backend systems, responsive interfaces, APIs, databases and AI integrations.", sources: ["Experience", "Brownfleet Experience", "OSCARBLACK Internship"], source: "verified-knowledge-engine" };
-  }
-
-  if (lower.includes('docker') || lower.includes('container')) {
-    return { reply: "Yes. Docker is part of Sukhvant's technical skill set. In the context of his broader engineering background, that complements his experience with Node.js services, APIs, databases, deployment workflows and production SaaS systems. It gives him a solid foundation for working with containerized development and deployment environments.", sources: ["Technical Skills", "Experience"], source: "verified-knowledge-engine" };
-  }
-
-  if (lower.includes('why should i hire') || lower.includes('why hire') || lower.includes('why should we hire') || lower.includes('good candidate') || lower.includes('good fit') || lower.includes('fit for this role')) {
-    return { reply: "Sukhvant brings a combination that is especially useful for modern product teams: strong TypeScript full-stack development, real production SaaS experience, and hands-on AI engineering. His background spans React and Next.js, Node.js, PostgreSQL, APIs, AI workflows, Agents and MCP. That breadth means he can contribute across the product rather than being limited to one layer, while his work with AI-powered systems gives him a strong foundation for teams building AI-enabled products.", sources: ["About", "Experience", "Projects", "AI Engineering", "Technical Skills"], source: "verified-knowledge-engine" };
-  }
-
-  if (lower.includes('project') || lower.includes('built') || lower.includes('portfolio')) {
-    return { reply: "Sukhvant's featured work includes the AI-Powered SaaS Platform, Invoice Builder SaaS, CareerLooms, and commercial client platforms. The projects demonstrate his work across React/Next.js, TypeScript, Node.js, PostgreSQL, Firebase/Supabase, Stripe, AI Agents, and MCP.", sources: ["Projects", "Invoice Builder SaaS", "AI-Powered SaaS Platform", "CareerLooms"], source: "verified-knowledge-engine" };
-  }
-
-  if (lower.includes('skill') || lower.includes('stack') || lower.includes('technology') || lower.includes('tech')) {
-    return { reply: "Sukhvant's strongest foundation is TypeScript-based full-stack development: React and Next.js on the frontend, Node.js and Express on the backend, with PostgreSQL and other databases underneath. His profile also shows hands-on AI work with LLM APIs, AI Agents and MCP, supported by Docker, Git and Linux/Bash.", sources: ["Technical Skills", "Projects", "AI Engineering"], source: "verified-knowledge-engine" };
-  }
-
-  if (lower.includes('android') || lower.includes('ios') || lower.includes('mobile')) {
-    return { reply: "Direct professional Android or iOS development isn't specifically recorded in Sukhvant's portfolio. However, his strong React, TypeScript, JavaScript, frontend architecture and API experience gives him a solid foundation for moving into mobile development, including a React Native-style stack. I'd expect the transition to be relatively approachable given his existing frontend and full-stack background.", sources: ["Technical Skills"], source: "verified-knowledge-engine" };
-  }
-
-  if (lower.includes('aws') || lower.includes('cloud')) {
-    return { reply: "AWS isn't specifically listed in Sukhvant's recorded experience. However, he has worked with backend services, APIs, databases, Docker, deployment workflows and production SaaS systems, which gives him a strong foundation for adapting to cloud environments such as AWS.", sources: ["Technical Skills", "Experience"], source: "verified-knowledge-engine" };
-  }
-
-  if (lower.includes('love coding') || lower.includes('like coding') || lower.includes('passionate about coding')) {
-    return { reply: "While the profile doesn't formally state the phrase \"I love coding,\" I'd say software development is clearly a major professional interest for Sukhvant. His sustained work across full-stack applications, SaaS products, AI engineering and modern development technologies strongly supports that interpretation.", sources: ["About", "Projects", "AI Engineering"], source: "verified-knowledge-engine" };
-  }
-
-  if (lower.includes('hobby') || lower.includes('hobbies') || lower.includes('favorite food') || lower.includes('favourite food') || lower.includes('football')) {
-    return { reply: "That's not covered by Sukhvant's verified professional portfolio knowledge, so I wouldn't want to invent a personal answer. I can tell you about his engineering interests, projects, AI work and professional experience instead.", sources: ["About", "Experience", "Projects"], source: "verified-knowledge-engine" };
-  }
-
-  if (lower.includes('hire') || lower.includes('opportunity')) {
-    return { reply: "Sukhvant is a Full Stack Developer & AI Engineer focused on modern web applications, SaaS products, and AI-powered experiences. His strengths include TypeScript full-stack development with Next.js and Node.js, PostgreSQL-backed systems, and AI agent/MCP integrations. His profile shows broad product-engineering experience that can translate well across modern software teams.", sources: ["About", "Experience", "Contact"], source: "verified-knowledge-engine" };
-  }
-
+  if (/^(hi|hello|hey|hii|good morning|good afternoon|good evening|how are you)[!,.\s]*$/i.test(lower)) return { reply: "Hi! I'm Sukhvant AI. I can help you quickly review Sukhvant's professional experience, employers, projects, technical skills, AI/MCP work, engineering approach, or resume.", sources: ["About", "Experience", "Projects", "Skills", "Resume"], source: "verified-knowledge-engine" };
+  if (/^(great|good|nice|perfect|awesome|excellent|interesting|got it|okay|ok|thanks|thank you|thx|cool)[!,.\s]*$/i.test(lower)) return { reply: lower.includes('thank') || lower === 'thx' ? "You're welcome. Let me know what you'd like to explore about Sukhvant." : "Glad that helps. I can also walk you through Sukhvant's projects, strongest technical areas, AI engineering work, experience, or potential fit for a role.", sources: ["About", "Experience", "Projects"], source: "verified-knowledge-engine" };
+  if (lower.includes('resume') || lower.includes('cv') || lower.includes('curriculum vitae')) return { reply: "Sukhvant's resume covers his experience as a Full Stack Developer and AI Engineer, including Brownfleet, freelance/self-employed work, and his OSCARBLACK frontend internship. His core stack includes React, Next.js, TypeScript, Node.js, PostgreSQL, AI Agents, and MCP. You can open the Resume directly from the portfolio to review the complete resume.", sources: ["Resume", "Experience", "Skills"], source: "verified-knowledge-engine" };
+  if (lower.includes('email') || lower.includes('e-mail') || lower.includes('mail address') || lower.includes('contact email')) return { reply: "Sukhvant's professional email is sukhvantsingh2@gmail.com. You can use it for job opportunities, engineering roles, AI product work, or software development inquiries.", sources: ["Contact"], source: "verified-knowledge-engine" };
+  if (lower.includes('github') || lower.includes('git hub') || lower.includes('repositories') || lower.includes('repos')) return { reply: "Sukhvant's GitHub profile is github.com/SSukhvant. It contains his public repositories and engineering work.", sources: ["Contact", "GitHub"], source: "verified-knowledge-engine" };
+  if (lower.includes('linkedin') || lower.includes('linked in')) return { reply: "Sukhvant's LinkedIn profile is linkedin.com/in/sukhvantsingh. You can use it to view his professional profile and connect with him.", sources: ["Contact", "LinkedIn"], source: "verified-knowledge-engine" };
+  if (lower.includes('contact info') || lower.includes('contact information') || lower.includes('how can i contact') || lower.includes('how do i contact') || lower.includes('reach him') || lower.includes('reach sukhvant') || lower.includes('contact sukhvant')) return { reply: "The easiest way to contact Sukhvant is by email at sukhvantsingh2@gmail.com. His portfolio also provides direct links to his GitHub and LinkedIn profiles.", sources: ["Contact", "GitHub", "LinkedIn"], source: "verified-knowledge-engine" };
+  if (lower.includes('after brownfleet') || lower === 'after that' || lower.includes('what did he do after brownfleet') || (lower.includes('after') && previous.includes('brownfleet'))) return { reply: "After Brownfleet, the next recorded experience in Sukhvant's portfolio is his freelance/self-employed full-stack work. He built end-to-end web applications and digital platforms for business, travel, non-profit, e-commerce, and marketing clients.", sources: ["Experience"], source: "verified-knowledge-engine" };
+  if ((lower.includes('there') || lower.includes('he did') || lower.includes('his work')) && previous.includes('brownfleet')) return { reply: "At Brownfleet, Sukhvant worked as a Full Stack Developer for the recorded 2-year full-time period. His work included architecting SaaS features with Next.js and TypeScript, integrating AI workflows, LLM endpoints and MCP tooling, designing PostgreSQL models and REST APIs, and contributing to product engineering, performance profiling and deployment workflows.", sources: ["Brownfleet Experience", "AI Engineering"], source: "verified-knowledge-engine" };
+  if (lower.includes('brownfleet')) return { reply: "Brownfleet was a company where Sukhvant worked as a Full Stack Developer for the recorded 2-year full-time period. His work focused on scalable AI-powered SaaS solutions and full-stack web applications. He worked with Next.js, TypeScript, Node.js, PostgreSQL, APIs, AI workflows, LLM endpoints, and Model Context Protocol (MCP). His responsibilities included building SaaS features, integrating AI and MCP tooling into production services, designing PostgreSQL models and REST APIs, and contributing to product engineering and performance work.", sources: ["Brownfleet Experience", "AI Engineering"], source: "verified-knowledge-engine" };
+  if (lower.includes('professional experience') || lower.includes('work experience') || lower.includes('where did he work') || lower.includes('where did he worked') || lower.includes('where has he worked') || lower.includes('where does he work') || lower.includes('employer') || lower.includes('employers') || lower === 'experience' || lower.includes('worked at') || lower.includes('worked for')) return { reply: "Yes. Sukhvant has professional experience across three recorded engagements: Brownfleet as a Full Stack Developer, freelance/self-employed full-stack work, and an OSCARBLACK frontend internship. His experience spans production web applications, SaaS, backend systems, responsive interfaces, APIs, databases and AI integrations.", sources: ["Experience", "Brownfleet Experience", "OSCARBLACK Internship"], source: "verified-knowledge-engine" };
+  if (lower.includes('docker') || lower.includes('container')) return { reply: "Yes. Docker is part of Sukhvant's technical skill set. In the context of his broader engineering background, that complements his experience with Node.js services, APIs, databases, deployment workflows and production SaaS systems. It gives him a solid foundation for working with containerized development and deployment environments.", sources: ["Technical Skills", "Experience"], source: "verified-knowledge-engine" };
+  if (lower.includes('why should i hire') || lower.includes('why hire') || lower.includes('why should we hire') || lower.includes('good candidate') || lower.includes('good fit') || lower.includes('fit for this role')) return { reply: "Sukhvant brings a combination that is especially useful for modern product teams: strong TypeScript full-stack development, real production SaaS experience, and hands-on AI engineering. His background spans React and Next.js, Node.js, PostgreSQL, APIs, AI workflows, Agents and MCP. That breadth means he can contribute across the product rather than being limited to one layer, while his work with AI-powered systems gives him a strong foundation for teams building AI-enabled products.", sources: ["About", "Experience", "Projects", "AI Engineering", "Technical Skills"], source: "verified-knowledge-engine" };
+  if (lower.includes('project') || lower.includes('built') || lower.includes('portfolio')) return { reply: "Sukhvant's featured work includes the AI-Powered SaaS Platform, Invoice Builder SaaS, CareerLooms, and commercial client platforms. The projects demonstrate his work across React/Next.js, TypeScript, Node.js, PostgreSQL, Firebase/Supabase, Stripe, AI Agents, and MCP.", sources: ["Projects", "Invoice Builder SaaS", "AI-Powered SaaS Platform", "CareerLooms"], source: "verified-knowledge-engine" };
+  if (lower.includes('skill') || lower.includes('stack') || lower.includes('technology') || lower.includes('tech')) return { reply: "Sukhvant's strongest foundation is TypeScript-based full-stack development: React and Next.js on the frontend, Node.js and Express on the backend, with PostgreSQL and other databases underneath. His profile also shows hands-on AI work with LLM APIs, AI Agents and MCP, supported by Docker, Git and Linux/Bash.", sources: ["Technical Skills", "Projects", "AI Engineering"], source: "verified-knowledge-engine" };
+  if (lower.includes('android') || lower.includes('ios') || lower.includes('mobile')) return { reply: "Direct professional Android or iOS development isn't specifically recorded in Sukhvant's portfolio. However, his strong React, TypeScript, JavaScript, frontend architecture and API experience gives him a solid foundation for moving into mobile development, including a React Native-style stack. I'd expect the transition to be relatively approachable given his existing frontend and full-stack background.", sources: ["Technical Skills"], source: "verified-knowledge-engine" };
+  if (lower.includes('aws') || lower.includes('cloud')) return { reply: "AWS isn't specifically listed in Sukhvant's recorded experience. However, he has worked with backend services, APIs, databases, Docker, deployment workflows and production SaaS systems, which gives him a strong foundation for adapting to cloud environments such as AWS.", sources: ["Technical Skills", "Experience"], source: "verified-knowledge-engine" };
+  if (lower.includes('love coding') || lower.includes('like coding') || lower.includes('passionate about coding')) return { reply: "While the profile doesn't formally state the phrase \"I love coding,\" I'd say software development is clearly a major professional interest for Sukhvant. His sustained work across full-stack applications, SaaS products, AI engineering and modern development technologies strongly supports that interpretation.", sources: ["About", "Projects", "AI Engineering"], source: "verified-knowledge-engine" };
+  if (lower.includes('hobby') || lower.includes('hobbies') || lower.includes('favorite food') || lower.includes('favourite food') || lower.includes('football')) return { reply: "That's not covered by Sukhvant's verified professional portfolio knowledge, so I wouldn't want to invent a personal answer. I can tell you about his engineering interests, projects, AI work and professional experience instead.", sources: ["About", "Experience", "Projects"], source: "verified-knowledge-engine" };
+  if (lower.includes('hire') || lower.includes('opportunity')) return { reply: "Sukhvant is a Full Stack Developer & AI Engineer focused on modern web applications, SaaS products, and AI-powered experiences. His strengths include TypeScript full-stack development with Next.js and Node.js, PostgreSQL-backed systems, and AI agent/MCP integrations. His profile shows broad product-engineering experience that can translate well across modern software teams.", sources: ["About", "Experience", "Contact"], source: "verified-knowledge-engine" };
   return { reply: "I don't have enough information in Sukhvant's portfolio knowledge to answer that specifically. I can help with his experience, projects, skills, AI engineering, technologies, engineering approach, or potential fit for a role.", sources: ["About", "Experience", "Projects", "Skills"], source: "verified-knowledge-engine" };
 }
 
 export async function querySukhvantAI(message: string, conversationHistory: ChatMessage[] = []): Promise<AIResponsePayload> {
   const lower = message.toLowerCase().trim();
   const previous = conversationHistory.at(-1)?.content?.toLowerCase() || '';
-  const deterministicIntent =
-    /^(hi|hello|hey|hii|good morning|good afternoon|good evening|how are you)[!,.\s]*$/i.test(lower) ||
-    lower.includes('resume') || lower.includes('cv') || lower.includes('curriculum vitae') ||
-    lower.includes('email') || lower.includes('e-mail') || lower.includes('mail address') || lower.includes('contact email') ||
-    lower.includes('github') || lower.includes('git hub') || lower.includes('repositories') || lower.includes('repos') ||
-    lower.includes('linkedin') || lower.includes('linked in') ||
-    lower.includes('contact info') || lower.includes('contact information') || lower.includes('how can i contact') || lower.includes('how do i contact') || lower.includes('reach him') || lower.includes('reach sukhvant') || lower.includes('contact sukhvant') ||
-    lower.includes('professional experience') || lower.includes('work experience') || lower.includes('where did he work') || lower.includes('where did he worked') || lower.includes('where has he worked') || lower.includes('where does he work') || lower.includes('employer') || lower.includes('employers') || lower === 'experience' || lower.includes('worked at') || lower.includes('worked for') || lower.includes('brownfleet') || lower.includes('docker') || lower.includes('container') || lower.includes('why should i hire') || lower.includes('why hire') || lower.includes('why should we hire') || lower.includes('good candidate') || lower.includes('good fit') || lower.includes('fit for this role') || lower.includes('after brownfleet') || lower === 'after that' || (lower.includes('after') && previous.includes('brownfleet')) || ((lower.includes('there') || lower.includes('he did') || lower.includes('his work')) && previous.includes('brownfleet')) || lower.includes('android') || lower.includes('ios') || lower.includes('mobile') || lower.includes('aws') || lower.includes('cloud') || lower.includes('love coding') || lower.includes('like coding') || lower.includes('passionate about coding') || lower.includes('hobby') || lower.includes('hobbies') || lower.includes('favorite food') || lower.includes('favourite food') || lower.includes('football');
-
+  const deterministicIntent = /^(hi|hello|hey|hii|good morning|good afternoon|good evening|how are you)[!,.\s]*$/i.test(lower) || /^(great|good|nice|perfect|awesome|excellent|interesting|got it|okay|ok|thanks|thank you|thx|cool)[!,.\s]*$/i.test(lower) || lower.includes('resume') || lower.includes('cv') || lower.includes('curriculum vitae') || lower.includes('email') || lower.includes('e-mail') || lower.includes('mail address') || lower.includes('contact email') || lower.includes('github') || lower.includes('git hub') || lower.includes('repositories') || lower.includes('repos') || lower.includes('linkedin') || lower.includes('linked in') || lower.includes('contact info') || lower.includes('contact information') || lower.includes('how can i contact') || lower.includes('how do i contact') || lower.includes('reach him') || lower.includes('reach sukhvant') || lower.includes('contact sukhvant') || lower.includes('professional experience') || lower.includes('work experience') || lower.includes('where did he work') || lower.includes('where did he worked') || lower.includes('where has he worked') || lower.includes('where does he work') || lower.includes('employer') || lower.includes('employers') || lower === 'experience' || lower.includes('worked at') || lower.includes('worked for') || lower.includes('brownfleet') || lower.includes('docker') || lower.includes('container') || lower.includes('why should i hire') || lower.includes('why hire') || lower.includes('why should we hire') || lower.includes('good candidate') || lower.includes('good fit') || lower.includes('fit for this role') || lower.includes('after brownfleet') || lower === 'after that' || (lower.includes('after') && previous.includes('brownfleet')) || ((lower.includes('there') || lower.includes('he did') || lower.includes('his work')) && previous.includes('brownfleet')) || lower.includes('android') || lower.includes('ios') || lower.includes('mobile') || lower.includes('aws') || lower.includes('cloud') || lower.includes('love coding') || lower.includes('like coding') || lower.includes('passionate about coding') || lower.includes('hobby') || lower.includes('hobbies') || lower.includes('favorite food') || lower.includes('favourite food') || lower.includes('football');
   if (deterministicIntent) return getLocalKnowledgeAnswer(message, conversationHistory);
-
-  try {
-    const res = await fetch('/api/chat', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message, conversationHistory: conversationHistory.map(m => ({ role: m.role, content: m.content })) }) });
-    if (!res.ok) throw new Error(`Server responded with ${res.status}`);
-    const data = await res.json();
-    return { reply: normalizeAIResponse(data.reply || "No response received."), sources: data.sources || extractSourcesFromText(data.reply || ""), source: data.source || "gemini-2.5-flash" };
-  } catch (err) {
-    console.warn("API /api/chat error, switching to verified local knowledge engine:", err);
-    return getLocalKnowledgeAnswer(message, conversationHistory);
-  }
+  try { const res = await fetch('/api/chat', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message, conversationHistory: conversationHistory.map(m => ({ role: m.role, content: m.content })) }) }); if (!res.ok) throw new Error(`Server responded with ${res.status}`); const data = await res.json(); return { reply: normalizeAIResponse(data.reply || "No response received."), sources: data.sources || extractSourcesFromText(data.reply || ""), source: data.source || "gemini-2.5-flash" }; } catch (err) { console.warn("API /api/chat error, switching to verified local knowledge engine:", err); return getLocalKnowledgeAnswer(message, conversationHistory); }
 }
 
-function extractSourcesFromText(text: string): string[] {
-  const sources: string[] = [];
-  if (text.includes("AI") || text.includes("MCP") || text.includes("Agent")) sources.push("AI Engineering", "AI-Powered SaaS Platform");
-  if (text.includes("Brownfleet")) sources.push("Brownfleet Experience");
-  if (text.includes("Invoice")) sources.push("Invoice Builder SaaS");
-  if (text.includes("CareerLooms")) sources.push("CareerLooms");
-  if (text.includes("Skill") || text.includes("React") || text.includes("Next.js") || text.includes("PostgreSQL")) sources.push("Technical Skills");
-  return Array.from(new Set(sources));
-}
+function extractSourcesFromText(text: string): string[] { const sources: string[] = []; if (text.includes("AI") || text.includes("MCP") || text.includes("Agent")) sources.push("AI Engineering", "AI-Powered SaaS Platform"); if (text.includes("Brownfleet")) sources.push("Brownfleet Experience"); if (text.includes("Invoice")) sources.push("Invoice Builder SaaS"); if (text.includes("CareerLooms")) sources.push("CareerLooms"); if (text.includes("Skill") || text.includes("React") || text.includes("Next.js") || text.includes("PostgreSQL")) sources.push("Technical Skills"); return Array.from(new Set(sources)); }
