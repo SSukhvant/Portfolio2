@@ -1,9 +1,11 @@
+import "dotenv/config";
 import express from "express";
 import path from "path";
 import { createHash } from "crypto";
 import { fileURLToPath } from "url";
 import { createServer as createViteServer } from "vite";
 import { GoogleGenAI } from "@google/genai";
+import { Resend } from "resend";
 import { profileData } from "./src/data/profile";
 import { experienceData } from "./src/data/experience";
 import { projectsData } from "./src/data/projects";
@@ -19,10 +21,13 @@ const REQUEST_COOLDOWN_MS = 2500;
 const SESSION_TTL_MS = 24 * 60 * 60 * 1000;
 const IP_WINDOW_MS = 60 * 1000;
 const IP_REQUEST_LIMIT = 15;
+const CONTACT_WINDOW_MS = 60 * 60 * 1000;
+const CONTACT_REQUEST_LIMIT = 3;
 
 type VisitorSession = { questions: number; createdAt: number; lastRequestAt: number };
 const visitorSessions = new Map<string, VisitorSession>();
 const ipWindows = new Map<string, { startedAt: number; count: number }>();
+const contactWindows = new Map<string, { startedAt: number; count: number }>();
 
 function getClientIp(req: express.Request) {
   const forwarded = req.headers["x-forwarded-for"];
@@ -41,6 +46,7 @@ function pruneStores() {
   const now = Date.now();
   for (const [id, session] of visitorSessions) if (now - session.createdAt > SESSION_TTL_MS) visitorSessions.delete(id);
   for (const [ip, window] of ipWindows) if (now - window.startedAt > IP_WINDOW_MS) ipWindows.delete(ip);
+  for (const [ip, window] of contactWindows) if (now - window.startedAt > CONTACT_WINDOW_MS) contactWindows.delete(ip);
 }
 
 function checkIpRateLimit(ip: string) {
@@ -51,6 +57,18 @@ function checkIpRateLimit(ip: string) {
     return true;
   }
   if (current.count >= IP_REQUEST_LIMIT) return false;
+  current.count += 1;
+  return true;
+}
+
+function checkContactRateLimit(ip: string) {
+  const now = Date.now();
+  const current = contactWindows.get(ip);
+  if (!current || now - current.startedAt >= CONTACT_WINDOW_MS) {
+    contactWindows.set(ip, { startedAt: now, count: 1 });
+    return true;
+  }
+  if (current.count >= CONTACT_REQUEST_LIMIT) return false;
   current.count += 1;
   return true;
 }
@@ -120,52 +138,38 @@ function localFallback(query: string, history: Array<{ role: string; content: st
   if (/^(hi|hello|hey|hii|good morning|good afternoon|good evening|how are you)[!,.\s]*$/i.test(lower)) {
     return { reply: "Hi! I'm Sukhvant AI. I can help you review Sukhvant's professional experience, projects, technical skills, AI/MCP work, engineering approach, or resume.", source: "verified-knowledge" };
   }
-
   if (lower.includes("resume") || lower.includes("cv") || lower.includes("curriculum vitae")) {
     return { reply: "Sukhvant's resume covers his experience as a Full Stack Developer and AI Engineer, including Brownfleet, freelance/self-employed work, and his OSCARBLACK frontend internship. His core stack includes React, Next.js, TypeScript, Node.js, PostgreSQL, AI Agents, and MCP. You can open the Resume section on this portfolio to review the complete resume.", source: "verified-knowledge" };
   }
-
   if (lower.includes("after brownfleet") || (lower.includes("after") && previous.includes("brownfleet"))) {
     const next = experienceData.findIndex((item) => item.id === "brownfleet");
     const nextExperience = next >= 0 ? experienceData[next + 1] : undefined;
-    return {
-      reply: nextExperience ? `After Brownfleet, Sukhvant's next recorded experience is **${nextExperience.company}** as a **${nextExperience.role}**. ${nextExperience.summary}` : "I don't have a later recorded experience after Brownfleet in the verified portfolio data.",
-      source: "verified-knowledge"
-    };
+    return { reply: nextExperience ? `After Brownfleet, Sukhvant's next recorded experience is **${nextExperience.company}** as a **${nextExperience.role}**. ${nextExperience.summary}` : "I don't have a later recorded experience after Brownfleet in the verified portfolio data.", source: "verified-knowledge" };
   }
-
   if (lower.includes("brownfleet")) {
     return { reply: "Brownfleet was a company where Sukhvant worked as a Full Stack Developer for the recorded 2-year full-time period. His work focused on scalable AI-powered SaaS solutions and full-stack web applications. He worked with Next.js, TypeScript, Node.js, PostgreSQL, APIs, AI workflows, LLM endpoints, and Model Context Protocol (MCP). His responsibilities included building SaaS features, integrating AI and MCP tooling into production services, designing PostgreSQL models and REST APIs, and contributing to product engineering and performance work.", source: "verified-knowledge" };
   }
-
   if ((lower.includes("there") || lower.includes("he did") || lower.includes("his work")) && previous.includes("brownfleet")) {
     return { reply: "At Brownfleet, Sukhvant worked as a Full Stack Developer. He architected SaaS features with Next.js and TypeScript, integrated AI workflows and MCP tooling, worked with PostgreSQL models and REST APIs, and contributed to product engineering, performance profiling and deployment workflows.", source: "verified-knowledge" };
   }
-
   if (lower.includes("professional experience") || lower.includes("work experience") || lower.includes("where did he work") || lower.includes("where did he worked") || lower.includes("where has he worked") || lower.includes("employer") || lower === "experience") {
     return { reply: "Yes. Sukhvant has professional experience across Brownfleet as a Full Stack Developer, freelance/self-employed full-stack work, and an OSCARBLACK frontend internship. His experience spans production web applications, SaaS, backend systems, responsive interfaces, APIs, databases and AI integrations.", source: "verified-knowledge" };
   }
-
   if (lower.includes("skill") || lower.includes("stack") || lower.includes("technology") || lower.includes("tech")) {
     return { reply: "Sukhvant's strongest foundation is TypeScript-based full-stack development: React and Next.js on the frontend, Node.js and Express on the backend, with PostgreSQL and other databases underneath. His profile also shows hands-on AI work with LLM APIs, AI Agents and MCP, supported by Docker, Git and Linux/Bash.", source: "verified-knowledge" };
   }
-
   if (lower.includes("android") || lower.includes("ios") || lower.includes("mobile")) {
     return { reply: "Direct professional Android or iOS development isn't specifically recorded in Sukhvant's portfolio. However, his strong React, TypeScript, JavaScript, frontend architecture and API experience gives him a solid foundation for moving into mobile development, including a React Native-style stack. I'd expect the transition to be much more approachable given his existing frontend and full-stack background.", source: "verified-knowledge" };
   }
-
   if (lower.includes("aws") || lower.includes("cloud")) {
     return { reply: "AWS isn't specifically listed in Sukhvant's recorded experience. However, he has worked with backend services, APIs, databases, Docker, deployment workflows and production SaaS systems, which gives him a strong foundation for adapting to cloud environments such as AWS.", source: "verified-knowledge" };
   }
-
   if (lower.includes("love coding") || lower.includes("like coding") || lower.includes("passionate about coding")) {
     return { reply: "While the profile doesn't formally state the phrase \"I love coding,\" I'd say software development is clearly a major professional interest for Sukhvant. His sustained work across full-stack applications, SaaS products, AI engineering and modern development technologies strongly supports that interpretation.", source: "verified-knowledge" };
   }
-
   if (lower.includes("hobby") || lower.includes("hobbies") || lower.includes("favorite food") || lower.includes("favourite food")) {
     return { reply: "That's not covered by Sukhvant's verified professional portfolio knowledge, so I wouldn't want to invent a personal answer. I can tell you about his engineering interests, projects, AI work and professional experience instead.", source: "verified-knowledge" };
   }
-
   return { reply: "I don't have enough verified information in Sukhvant's portfolio knowledge to answer that specifically. I can help with his experience, projects, skills, AI engineering, technologies, engineering approach, or potential fit for a role.", source: "verified-knowledge" };
 }
 
@@ -219,6 +223,63 @@ async function startServer() {
     return res.json(fallback);
   });
 
+  app.post("/api/contact", async (req, res) => {
+    pruneStores();
+    const ip = getClientIp(req);
+    if (!checkContactRateLimit(ip)) return res.status(429).json({ error: "Too many contact attempts. Please try again later." });
+
+    const { name, email, message } = req.body as { name?: unknown; email?: unknown; message?: unknown };
+    const cleanName = typeof name === "string" ? name.trim() : "";
+    const cleanEmail = typeof email === "string" ? email.trim() : "";
+    const cleanMessage = typeof message === "string" ? message.trim() : "";
+
+    if (!cleanName || !cleanEmail || !cleanMessage) return res.status(400).json({ error: "Name, email and message are required." });
+    if (cleanName.length > 120) return res.status(400).json({ error: "Name is too long." });
+    if (cleanEmail.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(cleanEmail)) return res.status(400).json({ error: "Please provide a valid email address." });
+    if (cleanMessage.length > 5000) return res.status(400).json({ error: "Message is too long." });
+
+    const resendKey = process.env.RESEND_API_KEY;
+    const recipient = process.env.CONTACT_EMAIL || profileData.contactEmail;
+    const sender = process.env.EMAIL_FROM || "Sukhvant Portfolio <onboarding@resend.dev>";
+
+    if (!resendKey) {
+      console.error("RESEND_API_KEY is not configured.");
+      return res.status(503).json({ error: "Email service is not configured yet." });
+    }
+
+    try {
+      const resend = new Resend(resendKey);
+      const result = await resend.emails.send({
+        from: sender,
+        to: [recipient],
+        replyTo: cleanEmail,
+        subject: `Portfolio contact from ${cleanName}`,
+        text: [
+          "New Portfolio Contact",
+          "",
+          `Name / Organization: ${cleanName}`,
+          `Email: ${cleanEmail}`,
+          "",
+          "Message:",
+          cleanMessage,
+          "",
+          "Sent from sukhvant-singh portfolio contact form."
+        ].join("\n"),
+        html: `<div style="font-family:Arial,sans-serif;line-height:1.6;color:#111"><h2>New Portfolio Contact</h2><p><strong>Name / Organization:</strong> ${escapeHtml(cleanName)}</p><p><strong>Email:</strong> ${escapeHtml(cleanEmail)}</p><p><strong>Message:</strong></p><div style="white-space:pre-wrap;border:1px solid #ddd;padding:16px;border-radius:8px">${escapeHtml(cleanMessage)}</div><p style="font-size:12px;color:#666">Sent from Sukhvant's portfolio contact form.</p></div>`
+      });
+
+      if (result.error) {
+        console.error("Resend error:", result.error);
+        return res.status(502).json({ error: "Unable to dispatch the message right now. Please use the direct email option." });
+      }
+
+      return res.json({ success: true });
+    } catch (error) {
+      console.error("Contact email failed:", error);
+      return res.status(500).json({ error: "Unable to dispatch the message right now. Please use the direct email option." });
+    }
+  });
+
   app.get("/api/health", (_req, res) => res.json({ status: "operational", runtime: "linux-x86_64", service: "sukhvant-portfolio-api", timestamp: new Date().toISOString() }));
 
   if (process.env.NODE_ENV !== "production") {
@@ -230,6 +291,10 @@ async function startServer() {
     app.get("*", (_req, res) => res.sendFile(path.join(distPath, "index.html")));
   }
   app.listen(PORT, "0.0.0.0", () => console.log(`Sukhvant Portfolio Dev Server running on http://localhost:${PORT}`));
+}
+
+function escapeHtml(value: string) {
+  return value.replace(/[&<>'"]/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[char] || char));
 }
 
 startServer();
