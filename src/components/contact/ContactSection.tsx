@@ -21,6 +21,7 @@ export const ContactSection: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     if (!name.trim() || !email.trim() || !message.trim()) {
       setErrorMsg('Please complete all fields before dispatching message.');
       return;
@@ -29,14 +30,38 @@ export const ContactSection: React.FC = () => {
     setIsSubmitting(true);
     setErrorMsg('');
 
-    // Simulate reliable dispatch pipeline
-    setTimeout(() => {
-      setIsSubmitting(false);
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: name.trim(),
+          email: email.trim(),
+          message: message.trim(),
+        }),
+      });
+
+      const data = await response.json().catch(() => ({}));
+
+      if (!response.ok || !data.success) {
+        throw new Error(data.error || 'Unable to dispatch the message right now.');
+      }
+
       setIsSubmitted(true);
       setName('');
       setEmail('');
       setMessage('');
-    }, 800);
+    } catch (error) {
+      setErrorMsg(
+        error instanceof Error
+          ? error.message
+          : 'Unable to dispatch the message right now. Please use the direct email option.'
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -50,8 +75,6 @@ export const ContactSection: React.FC = () => {
         />
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          
-          {/* Left Column: Direct Links & Terminal Contact Info */}
           <div className="lg:col-span-5 space-y-6">
             <div className="bg-[#FAFAFA] dark:bg-[#080808] border border-[#E5E7E5] dark:border-[#151A15] rounded-xl p-5 sm:p-6 shadow-xs dark:shadow-xl space-y-4">
               <div className="font-mono-tech text-xs text-[#00873D] dark:text-[#00FF66] font-semibold uppercase tracking-widest flex items-center gap-2">
@@ -63,7 +86,6 @@ export const ContactSection: React.FC = () => {
                 I am actively considering full-time engineering roles, AI product consulting, and bespoke software contracting.
               </p>
 
-              {/* Email Copy Card */}
               <div className="bg-[#FFFFFF] dark:bg-[#0E0E0E] border border-[#E5E7E5] dark:border-[#151A15] p-3.5 rounded-lg flex items-center justify-between font-mono-tech text-xs">
                 <div className="flex items-center gap-2 truncate">
                   <Mail className="w-4 h-4 text-[#00873D] dark:text-[#00FF66] shrink-0" />
@@ -79,7 +101,6 @@ export const ContactSection: React.FC = () => {
                 </button>
               </div>
 
-              {/* Social Channels */}
               <div className="space-y-2 pt-2">
                 <a
                   id="contact-mail-direct-btn"
@@ -124,7 +145,6 @@ export const ContactSection: React.FC = () => {
             </div>
           </div>
 
-          {/* Right Column: Interactive ./contact.sh Form */}
           <div className="lg:col-span-7 bg-[#FAFAFA] dark:bg-[#080808] border border-[#E5E7E5] dark:border-[#151A15] rounded-xl overflow-hidden shadow-xs dark:shadow-xl font-mono-tech text-xs">
             <div className="bg-[#F0F0F0] dark:bg-[#0D0D0D] border-b border-[#E5E7E5] dark:border-[#151A15] px-5 py-3.5 flex items-center justify-between">
               <div className="flex items-center gap-2">
@@ -218,7 +238,6 @@ export const ContactSection: React.FC = () => {
               )}
             </div>
           </div>
-
         </div>
       </div>
     </section>
