@@ -37,7 +37,16 @@ export const SukhvantAIPanel: React.FC<SukhvantAIPanelProps> = ({ isOpen, onClos
   }, [isOpen]);
 
   useEffect(() => {
-    if (isOpen) setTimeout(() => inputRef.current?.focus(), 150);
+    if (!isOpen) {
+      // Do not retain a recruiter's conversation after the AI panel is closed.
+      setMessages([]);
+      setInputVal('');
+      setIsProcessing(false);
+      setProcessingStep('');
+      setAiState('idle');
+      return;
+    }
+    setTimeout(() => inputRef.current?.focus(), 150);
   }, [isOpen]);
 
   useEffect(() => {
@@ -140,22 +149,7 @@ export const SukhvantAIPanel: React.FC<SukhvantAIPanelProps> = ({ isOpen, onClos
               <form onSubmit={(e) => { e.preventDefault(); handleSendMessage(inputVal); }} className="flex items-center gap-2">
                 <div className={`relative flex-1 flex items-center rounded-xl px-3 py-2 border transition-colors ${theme === 'dark' ? 'bg-[#050505] border-white/10 focus-within:border-[#00FF66]/60' : 'bg-[#FFFFFF] border-[#D5D5D5] focus-within:border-[#00A84F]'}`}>
                   <span className="text-[#00FF66] font-mono-tech mr-2 font-bold">&gt;</span>
-                  <input
-                    ref={inputRef}
-                    id="ai-panel-input"
-                    name="sukhvant-ai-query"
-                    type="text"
-                    value={inputVal}
-                    onChange={(e) => setInputVal(e.target.value)}
-                    placeholder="Ask something about Sukhvant's work, AI, or stack..."
-                    disabled={isProcessing}
-                    autoComplete="off"
-                    autoCorrect="off"
-                    autoCapitalize="sentences"
-                    spellCheck={false}
-                    enterKeyHint="send"
-                    className="w-full bg-transparent text-xs sm:text-sm font-sans focus:outline-none font-light placeholder:text-[#8A8A8A]"
-                  />
+                  <input ref={inputRef} id="ai-panel-input" name="sukhvant-ai-query" type="text" value={inputVal} onChange={(e) => setInputVal(e.target.value)} placeholder="Ask something about Sukhvant's work, AI, or stack..." disabled={isProcessing} autoComplete="off" autoCorrect="off" autoCapitalize="sentences" spellCheck={false} enterKeyHint="send" className="w-full bg-transparent text-xs sm:text-sm font-sans focus:outline-none font-light placeholder:text-[#8A8A8A]" />
                 </div>
                 <button id="ai-panel-send-btn" type="submit" disabled={!inputVal.trim() || isProcessing} className="bg-[#00FF66] text-black p-2.5 rounded-xl font-medium hover:bg-[#00D957] disabled:opacity-30 disabled:cursor-not-allowed transition-all shadow-[0_0_12px_rgba(0,255,102,0.3)]"><Send className="w-4 h-4" /></button>
               </form>
