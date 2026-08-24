@@ -41,7 +41,7 @@ export const SukhvantAIPanel: React.FC<SukhvantAIPanelProps> = ({ isOpen, onClos
   }, [isOpen]);
 
   useEffect(() => {
-    if (isOpen) messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (isOpen) messagesEndRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }, [messages, processingStep, isOpen]);
 
   useEffect(() => {
@@ -97,13 +97,28 @@ export const SukhvantAIPanel: React.FC<SukhvantAIPanelProps> = ({ isOpen, onClos
   return (
     <AnimatePresence>
       {isOpen && (
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }} className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/85 backdrop-blur-md" onClick={onClose}>
-          <motion.div initial={{ scale: 0.9, y: 30, opacity: 0 }} animate={{ scale: 1, y: 0, opacity: 1 }} exit={{ scale: 0.9, y: 20, opacity: 0 }} transition={{ type: 'spring', damping: 25, stiffness: 300 }} className={`w-full max-w-2xl rounded-2xl shadow-2xl overflow-hidden flex flex-col h-[85vh] max-h-[680px] font-mono-tech relative border ${theme === 'dark' ? 'bg-[#050505] border-[#151A15] text-[#FFFFFF]' : 'bg-[#FFFFFF] border-[#E5E7E5] text-[#111111]'}`} onClick={(e) => e.stopPropagation()}>
-            <div className={`px-4 py-3.5 flex items-center justify-between border-b ${theme === 'dark' ? 'bg-[#080808] border-[#151A15]' : 'bg-[#FAFAFA] border-[#E5E7E5]'}`}>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.2 }}
+          className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/85 backdrop-blur-md"
+          onClick={onClose}
+        >
+          <motion.div
+            initial={{ scale: 0.9, y: 30, opacity: 0 }}
+            animate={{ scale: 1, y: 0, opacity: 1 }}
+            exit={{ scale: 0.9, y: 20, opacity: 0 }}
+            transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+            className={`w-full max-w-2xl rounded-2xl shadow-2xl overflow-hidden flex flex-col h-[calc(100dvh-1rem)] max-h-[680px] sm:h-[85vh] sm:max-h-[680px] font-mono-tech relative border pb-[env(safe-area-inset-bottom)] ${theme === 'dark' ? 'bg-[#050505] border-[#151A15] text-[#FFFFFF]' : 'bg-[#FFFFFF] border-[#E5E7E5] text-[#111111]'}`}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className={`shrink-0 px-4 py-3.5 flex items-center justify-between border-b ${theme === 'dark' ? 'bg-[#080808] border-[#151A15]' : 'bg-[#FAFAFA] border-[#E5E7E5]'}`}>
               <div className="flex items-center gap-3"><AIOrb size="sm" state={aiState} /><div><div className="flex items-center gap-2"><span className="font-mono text-xs text-[#00FF66] font-semibold tracking-wider">✦ sukhvant-ai.service</span><span className="text-[10px] bg-[#00FF66]/10 text-[#00FF66] px-2 py-0.5 rounded border border-[#00FF66]/30 font-mono tracking-wider font-medium flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-[#00FF66] animate-pulse" />ACTIVE</span></div><div className="text-[10px] text-[#8A8A8A] font-sans">Multi-Model Fallback &bull; Verified Portfolio Knowledge</div></div></div>
               <div className="flex items-center gap-2"><button id="ai-panel-reset-btn" onClick={() => setMessages([])} title="Reset conversation" className={`p-1.5 rounded transition-colors ${theme === 'dark' ? 'text-[#8A8A8A] hover:text-white hover:bg-white/10' : 'text-[#666666] hover:text-black hover:bg-black/5'}`}><RefreshCw className="w-3.5 h-3.5" /></button><button id="ai-panel-close-btn" onClick={onClose} title="Close panel (Esc)" className={`p-1.5 rounded transition-colors ${theme === 'dark' ? 'text-[#8A8A8A] hover:text-white hover:bg-white/10' : 'text-[#666666] hover:text-black hover:bg-black/5'}`}><X className="w-4 h-4" /></button></div>
             </div>
-            <div className={`flex-1 overflow-y-auto p-4 sm:p-5 space-y-4 text-xs sm:text-sm ${theme === 'dark' ? 'bg-[#000000]' : 'bg-[#FAFAFA]'}`}>
+
+            <div className={`flex-1 min-h-0 overflow-y-auto overscroll-contain p-4 sm:p-5 space-y-4 text-xs sm:text-sm ${theme === 'dark' ? 'bg-[#000000]' : 'bg-[#FAFAFA]'}`}>
               {messages.map((msg) => {
                 const isUser = msg.role === 'user';
                 return <div key={msg.id} className={`flex gap-3 ${isUser ? 'justify-end' : 'justify-start'}`}>
@@ -118,8 +133,34 @@ export const SukhvantAIPanel: React.FC<SukhvantAIPanelProps> = ({ isOpen, onClos
               {isProcessing && <div className="flex gap-3 items-center text-xs text-[#00FF66] font-mono-tech pl-2"><AIOrb size="sm" state="thinking" /><span>{processingStep || 'processing query...'}</span></div>}
               <div ref={messagesEndRef} />
             </div>
-            {messages.length <= 3 && !isProcessing && <div className={`px-4 py-2.5 border-t ${theme === 'dark' ? 'bg-[#080808] border-[#151A15]' : 'bg-[#FAFAFA] border-[#E5E7E5]'}`}><div className="text-[10px] text-[#8A8A8A] mb-1.5 uppercase tracking-widest font-mono">SUGGESTED VERIFIED QUERIES</div><div className="flex flex-wrap gap-1.5 max-h-24 overflow-y-auto">{suggestedQuestions.map((q, idx) => <button key={idx} id={`suggested-q-${idx}`} onClick={() => handleSendMessage(q)} className={`text-[11px] px-2.5 py-1 rounded transition-colors text-left font-mono ${theme === 'dark' ? 'bg-[#050505] hover:bg-[#121212] text-[#A3A3A3] hover:text-[#00FF66] border border-white/10 hover:border-[#00FF66]/30' : 'bg-[#FFFFFF] hover:bg-[#EFEFEF] text-[#444444] hover:text-[#00A84F] border border-[#E0E0E0]'}`}>[ {q} ]</button>)}</div></div>}
-            <div className={`p-3 sm:p-4 border-t ${theme === 'dark' ? 'bg-[#080808] border-[#151A15]' : 'bg-[#FAFAFA] border-[#E5E7E5]'}`}><form onSubmit={(e) => { e.preventDefault(); handleSendMessage(inputVal); }} className="flex items-center gap-2"><div className={`relative flex-1 flex items-center rounded-xl px-3 py-2 border transition-colors ${theme === 'dark' ? 'bg-[#050505] border-white/10 focus-within:border-[#00FF66]/60' : 'bg-[#FFFFFF] border-[#D5D5D5] focus-within:border-[#00A84F]'}`}><span className="text-[#00FF66] font-mono-tech mr-2 font-bold">&gt;</span><input ref={inputRef} id="ai-panel-input" type="text" value={inputVal} onChange={(e) => setInputVal(e.target.value)} placeholder="Ask something about Sukhvant's work, AI, or stack..." disabled={isProcessing} className="w-full bg-transparent text-xs sm:text-sm font-sans focus:outline-none font-light placeholder:text-[#8A8A8A]" /></div><button id="ai-panel-send-btn" type="submit" disabled={!inputVal.trim() || isProcessing} className="bg-[#00FF66] text-black p-2.5 rounded-xl font-medium hover:bg-[#00D957] disabled:opacity-30 disabled:cursor-not-allowed transition-all shadow-[0_0_12px_rgba(0,255,102,0.3)]"><Send className="w-4 h-4" /></button></form><div className="flex items-center justify-between text-[10px] text-[#8A8A8A] mt-2 px-1 font-mono"><span>Multi-Model AI Engine &bull; Verified Portfolio</span><span>Esc to close</span></div></div>
+
+            {messages.length <= 3 && !isProcessing && <div className={`shrink-0 px-4 py-2.5 border-t ${theme === 'dark' ? 'bg-[#080808] border-[#151A15]' : 'bg-[#FAFAFA] border-[#E5E7E5]'}`}><div className="text-[10px] text-[#8A8A8A] mb-1.5 uppercase tracking-widest font-mono">SUGGESTED VERIFIED QUERIES</div><div className="flex flex-wrap gap-1.5 max-h-24 overflow-y-auto">{suggestedQuestions.map((q, idx) => <button key={idx} id={`suggested-q-${idx}`} onClick={() => handleSendMessage(q)} className={`text-[11px] px-2.5 py-1 rounded transition-colors text-left font-mono ${theme === 'dark' ? 'bg-[#050505] hover:bg-[#121212] text-[#A3A3A3] hover:text-[#00FF66] border border-white/10 hover:border-[#00FF66]/30' : 'bg-[#FFFFFF] hover:bg-[#EFEFEF] text-[#444444] hover:text-[#00A84F] border border-[#E0E0E0]'}`}>[ {q} ]</button>)}</div></div>}
+
+            <div className={`shrink-0 p-3 sm:p-4 border-t pb-[max(0.75rem,env(safe-area-inset-bottom))] ${theme === 'dark' ? 'bg-[#080808] border-[#151A15]' : 'bg-[#FAFAFA] border-[#E5E7E5]'}`}>
+              <form onSubmit={(e) => { e.preventDefault(); handleSendMessage(inputVal); }} className="flex items-center gap-2">
+                <div className={`relative flex-1 flex items-center rounded-xl px-3 py-2 border transition-colors ${theme === 'dark' ? 'bg-[#050505] border-white/10 focus-within:border-[#00FF66]/60' : 'bg-[#FFFFFF] border-[#D5D5D5] focus-within:border-[#00A84F]'}`}>
+                  <span className="text-[#00FF66] font-mono-tech mr-2 font-bold">&gt;</span>
+                  <input
+                    ref={inputRef}
+                    id="ai-panel-input"
+                    name="sukhvant-ai-query"
+                    type="text"
+                    value={inputVal}
+                    onChange={(e) => setInputVal(e.target.value)}
+                    placeholder="Ask something about Sukhvant's work, AI, or stack..."
+                    disabled={isProcessing}
+                    autoComplete="off"
+                    autoCorrect="off"
+                    autoCapitalize="sentences"
+                    spellCheck={false}
+                    enterKeyHint="send"
+                    className="w-full bg-transparent text-xs sm:text-sm font-sans focus:outline-none font-light placeholder:text-[#8A8A8A]"
+                  />
+                </div>
+                <button id="ai-panel-send-btn" type="submit" disabled={!inputVal.trim() || isProcessing} className="bg-[#00FF66] text-black p-2.5 rounded-xl font-medium hover:bg-[#00D957] disabled:opacity-30 disabled:cursor-not-allowed transition-all shadow-[0_0_12px_rgba(0,255,102,0.3)]"><Send className="w-4 h-4" /></button>
+              </form>
+              <div className="flex items-center justify-between text-[10px] text-[#8A8A8A] mt-2 px-1 font-mono"><span>Multi-Model AI Engine &bull; Verified Portfolio</span><span>Esc to close</span></div>
+            </div>
           </motion.div>
         </motion.div>
       )}
