@@ -29,7 +29,7 @@ export interface ExperienceItem {
   company: string;
   period: string;
   location: string;
-  type: 'Full-time' | 'Contract' | 'Internship';
+  type: 'Full-time' | 'Contract' | 'Internship' | 'Professional' | 'Freelance';
   commitHash: string;
   summary: string;
   focus: string[];
