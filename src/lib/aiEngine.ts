@@ -324,7 +324,7 @@ function localAnswer(
     ])
   ) {
     return out(
-      `${profileData.name} is a ${profileData.title} focused on modern web applications, SaaS products and AI-powered experiences. His strongest foundation is TypeScript full-stack engineering across React/Next.js, Node.js and PostgreSQL, with hands-on work in AI agents and MCP. His recorded experience includes Brownfleet, freelance/self-employed development and an OSCARBLACK frontend internship.`,
+      `${profileData.name} is a ${profileData.title} focused on modern web applications, SaaS products and AI-powered experiences. His strongest foundation is TypeScript full-stack engineering across React/Next.js, Node.js and PostgreSQL, with hands-on work in AI agents and MCP. His recorded experience includes full-stack developer roles at Brownfleet and MetaBRS, freelance full-stack projects, and a UI/UX Developer internship at Oscarblack Private Limited.`,
       ['About', 'Experience', 'Technical Skills', 'AI Engineering']
     );
   }
@@ -337,7 +337,7 @@ function localAnswer(
     q.includes('sukhvant profile')
   ) {
     return out(
-      `${profileData.name} is a ${profileData.title} focused on modern web applications, SaaS products and AI-powered experiences. His strongest foundation is TypeScript full-stack engineering across React/Next.js, Node.js and PostgreSQL, with hands-on work in AI agents and MCP. His recorded experience includes Brownfleet, freelance/self-employed development and an OSCARBLACK frontend internship.`,
+      `${profileData.name} is a ${profileData.title} focused on modern web applications, SaaS products and AI-powered experiences. His strongest foundation is TypeScript full-stack engineering across React/Next.js, Node.js and PostgreSQL, with hands-on work in AI agents and MCP. His recorded experience includes full-stack developer roles at Brownfleet and MetaBRS, freelance full-stack projects, and a UI/UX Developer internship at Oscarblack Private Limited.`,
       ['About', 'Experience', 'Technical Skills', 'AI Engineering']
     );
   }
@@ -456,8 +456,8 @@ function localAnswer(
     previous.includes('brownfleet')
   ) {
     return out(
-      "Before Brownfleet, Sukhvant worked as a Full Stack Developer at MetaBRS from January to September 2023. Before MetaBRS, he completed freelance full-stack projects from January to December 2022.",
-      ['OSCARBLACK Internship', 'Experience'],
+      "Before Brownfleet, Sukhvant worked as a Full Stack Developer at MetaBRS from January to September 2023. Before MetaBRS, he completed freelance full-stack projects from January to December 2022. His earlier listed role was a UI/UX Developer internship at Oscarblack Private Limited from April to October 2021.",
+      ['MetaBRS Experience', 'Freelance Experience', 'Experience'],
       'navigate-experience'
     );
   }
@@ -510,6 +510,30 @@ function localAnswer(
     return out(
       "Brownfleet was a company where Sukhvant worked as a Full Stack Developer from January 2024 to May 2026. His work focused on scalable AI-powered SaaS solutions and full-stack web applications. He worked with Next.js, TypeScript, Node.js, PostgreSQL, APIs, AI workflows, LLM endpoints and Model Context Protocol (MCP). His responsibilities included building SaaS features, integrating AI and MCP tooling into production services, designing PostgreSQL models and REST APIs, and contributing to product engineering and performance work.",
       ['Brownfleet Experience', 'AI Engineering'],
+      'navigate-experience'
+    );
+  }
+
+  if (q.includes('metabrs')) {
+    return out(
+      "At MetaBRS, Sukhvant worked as a Full Stack Developer from January to September 2023 in Noida. He developed web solutions for tour and travel, NGOs, businesses, e-commerce, startups and lead-generation campaigns. His work included responsive React.js and Next.js applications, WordPress and Shopify websites, API integrations and the company website.",
+      ['MetaBRS Experience', 'Experience'],
+      'navigate-experience'
+    );
+  }
+
+  if (q.includes('freelance')) {
+    return out(
+      "Sukhvant worked as a Freelance Full Stack Developer from January to December 2022. He delivered web projects using React.js, WordPress, Shopify, HTML, CSS, Bootstrap and Material UI, integrated APIs, implemented CRUD operations, and connected applications with SQL, Firebase, MongoDB and NeDB.",
+      ['Freelance Experience', 'Experience'],
+      'navigate-experience'
+    );
+  }
+
+  if (q.includes('oscarblack')) {
+    return out(
+      "Sukhvant was a UI/UX Developer Intern at Oscarblack Private Limited from April to October 2021. He developed frontend interfaces for shipping and logistics websites using HTML, CSS, Bootstrap, SCSS and React.js, worked with senior developers, and contributed to projects through deployment.",
+      ['Oscarblack Experience', 'Experience'],
       'navigate-experience'
     );
   }
