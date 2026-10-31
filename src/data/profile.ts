@@ -1,6 +1,6 @@
 export const profileData = {
   name: "Sukhvant Singh",
-  title: "Full Stack Developer | Building Web Applications, AI Agents & AI-Powered Products",
+  title: "Full Stack Developer",
   roles: ["Full Stack Developer", "AI Product Developer", "Product Engineer"],
   bio: "Full Stack Developer with experience across startups, freelance projects, and AI product development. Builds responsive, full-stack web applications using React, Next.js, TypeScript, Node.js, Express.js, SQL, MongoDB, and Supabase. Currently focused on AI agents, RAG-based applications, and intelligent product workflows.",
   tagline: "I build applications where AI is part of the product — not just a chatbot added to the interface.",
