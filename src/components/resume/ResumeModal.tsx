@@ -107,7 +107,7 @@ export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose }) => 
               PROFESSIONAL SUMMARY
             </h3>
             <p className="text-[#555555] dark:text-[#A3A3A3] text-xs sm:text-sm font-light leading-relaxed">
-              Full Stack Developer with deep proficiency across Next.js, React, TypeScript, Node.js, and PostgreSQL. Experienced in architecting context-aware AI agent pipelines using Model Context Protocol (MCP) and delivering production-ready commercial SaaS applications.
+              Full Stack Developer with experience across startups, freelance projects, and AI product development. Builds responsive, full-stack web applications using React, Next.js, TypeScript, Node.js, Express.js, SQL, MongoDB, and Supabase. Currently focused on AI agents, RAG-based applications, and intelligent product workflows.
             </p>
           </div>
 
