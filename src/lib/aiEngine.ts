@@ -156,7 +156,7 @@ function localAnswer(
     ])
   ) {
     return out(
-      "Sukhvant's resume covers his Full Stack Developer and AI Engineer experience, Brownfleet, freelance/self-employed work, his OSCARBLACK internship, projects, and core technical skills.",
+      "Sukhvant's resume covers his Full Stack Developer experience at Brownfleet and MetaBRS, freelance development, his Oscarblack internship, projects, and core technical skills.",
       ['Resume'],
       'open-resume'
     );
@@ -258,7 +258,7 @@ function localAnswer(
     ])
   ) {
     return out(
-      "Sukhvant's recorded experience includes Brownfleet, freelance/self-employed full-stack work and an OSCARBLACK frontend internship.",
+      "Sukhvant's recorded experience includes Brownfleet and MetaBRS full-stack roles, freelance development, and an Oscarblack UI/UX Developer internship.",
       ['Experience'],
       'navigate-experience'
     );
@@ -324,7 +324,7 @@ function localAnswer(
     ])
   ) {
     return out(
-      `${profileData.name} is a ${profileData.title} focused on modern web applications, SaaS products and AI-powered experiences. His strongest foundation is TypeScript full-stack engineering across React/Next.js, Node.js and PostgreSQL, with hands-on work in AI agents and MCP. His recorded experience includes Brownfleet, freelance/self-employed development and an OSCARBLACK frontend internship.`,
+      `${profileData.name} is a ${profileData.title} focused on modern web applications, SaaS products and AI-powered experiences. His strongest foundation is TypeScript full-stack engineering across React/Next.js, Node.js and PostgreSQL, with hands-on work in AI agents and MCP. His recorded experience includes full-stack developer roles at Brownfleet and MetaBRS, freelance full-stack projects, and a UI/UX Developer internship at Oscarblack Private Limited.`,
       ['About', 'Experience', 'Technical Skills', 'AI Engineering']
     );
   }
@@ -337,7 +337,7 @@ function localAnswer(
     q.includes('sukhvant profile')
   ) {
     return out(
-      `${profileData.name} is a ${profileData.title} focused on modern web applications, SaaS products and AI-powered experiences. His strongest foundation is TypeScript full-stack engineering across React/Next.js, Node.js and PostgreSQL, with hands-on work in AI agents and MCP. His recorded experience includes Brownfleet, freelance/self-employed development and an OSCARBLACK frontend internship.`,
+      `${profileData.name} is a ${profileData.title} focused on modern web applications, SaaS products and AI-powered experiences. His strongest foundation is TypeScript full-stack engineering across React/Next.js, Node.js and PostgreSQL, with hands-on work in AI agents and MCP. His recorded experience includes full-stack developer roles at Brownfleet and MetaBRS, freelance full-stack projects, and a UI/UX Developer internship at Oscarblack Private Limited.`,
       ['About', 'Experience', 'Technical Skills', 'AI Engineering']
     );
   }
@@ -423,7 +423,7 @@ function localAnswer(
     has(previous, ['brownfleet'])
   ) {
     return out(
-      "At Brownfleet, Sukhvant worked as a Full Stack Developer for the recorded 2-year full-time period. He built SaaS features with Next.js and TypeScript, integrated AI workflows, LLM endpoints and MCP tooling, designed PostgreSQL models and REST APIs, and contributed to product engineering and performance work.",
+      "At Brownfleet, Sukhvant worked as a Full Stack Developer from January 2024 to May 2026. He built SaaS features with Next.js and TypeScript, integrated AI workflows, LLM endpoints and MCP tooling, designed PostgreSQL models and REST APIs, and contributed to product engineering and performance work.",
       ['Brownfleet Experience', 'AI Engineering']
     );
   }
@@ -439,7 +439,7 @@ function localAnswer(
     (q.includes('after') && previous.includes('brownfleet'))
   ) {
     return out(
-      "After Brownfleet, the next recorded experience is Sukhvant's freelance/self-employed Full Stack Developer work, where he built end-to-end web applications and digital platforms for business, travel, non-profit, e-commerce and marketing clients.",
+      "After Brownfleet (Jan 2024–May 2026), the resume does not list a later employer. The preceding role was MetaBRS, where Sukhvant worked as a Full Stack Developer from January to September 2023.",
       ['Experience'],
       'navigate-experience'
     );
@@ -456,8 +456,8 @@ function localAnswer(
     previous.includes('brownfleet')
   ) {
     return out(
-      "Before Brownfleet, the recorded experience in Sukhvant's portfolio is his OSCARBLACK Front-End Developer internship. That work focused on responsive interfaces, HTML/CSS, JavaScript, frontend optimization and accessibility.",
-      ['OSCARBLACK Internship', 'Experience'],
+      "Before Brownfleet, Sukhvant worked as a Full Stack Developer at MetaBRS from January to September 2023. Before MetaBRS, he completed freelance full-stack projects from January to December 2022. His earlier listed role was a UI/UX Developer internship at Oscarblack Private Limited from April to October 2021.",
+      ['MetaBRS Experience', 'Freelance Experience', 'Experience'],
       'navigate-experience'
     );
   }
@@ -485,7 +485,7 @@ function localAnswer(
     q === 'experience'
   ) {
     return out(
-      'Yes. Sukhvant has professional experience across three recorded engagements: Brownfleet as a Full Stack Developer for 2 years, freelance/self-employed full-stack work, and an OSCARBLACK Front-End Developer internship. His experience spans production web applications, SaaS, backend systems, responsive interfaces, APIs, databases and AI integrations.',
+      "Yes. Sukhvant's resume lists four professional engagements: Brownfleet (Full Stack Developer, Jan 2024–May 2026), MetaBRS (Full Stack Developer, Jan–Sep 2023), Freelance (Full Stack Developer, Jan–Dec 2022), and Oscarblack Private Limited (UI/UX Developer Intern, Apr–Oct 2021). Across these roles, he worked on web applications, responsive interfaces, APIs, databases, WordPress, Shopify, and AI-enabled product workflows.",
       ['Experience', 'Brownfleet Experience', 'OSCARBLACK Internship'],
       'navigate-experience'
     );
@@ -501,15 +501,39 @@ function localAnswer(
     ])
   ) {
     return out(
-      "Sukhvant's recorded Brownfleet experience is Full Time / 2 Years as a Full Stack Developer.",
+      "Sukhvant's resume lists Brownfleet as a Full Stack Developer role from January 2024 to May 2026.",
       ['Brownfleet Experience']
     );
   }
 
   if (q.includes('brownfleet')) {
     return out(
-      "Brownfleet was a company where Sukhvant worked as a Full Stack Developer for the recorded 2-year full-time period. His work focused on scalable AI-powered SaaS solutions and full-stack web applications. He worked with Next.js, TypeScript, Node.js, PostgreSQL, APIs, AI workflows, LLM endpoints and Model Context Protocol (MCP). His responsibilities included building SaaS features, integrating AI and MCP tooling into production services, designing PostgreSQL models and REST APIs, and contributing to product engineering and performance work.",
+      "Brownfleet was a company where Sukhvant worked as a Full Stack Developer from January 2024 to May 2026. His work focused on scalable AI-powered SaaS solutions and full-stack web applications. He worked with Next.js, TypeScript, Node.js, PostgreSQL, APIs, AI workflows, LLM endpoints and Model Context Protocol (MCP). His responsibilities included building SaaS features, integrating AI and MCP tooling into production services, designing PostgreSQL models and REST APIs, and contributing to product engineering and performance work.",
       ['Brownfleet Experience', 'AI Engineering'],
+      'navigate-experience'
+    );
+  }
+
+  if (q.includes('metabrs')) {
+    return out(
+      "At MetaBRS, Sukhvant worked as a Full Stack Developer from January to September 2023 in Noida. He developed web solutions for tour and travel, NGOs, businesses, e-commerce, startups and lead-generation campaigns. His work included responsive React.js and Next.js applications, WordPress and Shopify websites, API integrations and the company website.",
+      ['MetaBRS Experience', 'Experience'],
+      'navigate-experience'
+    );
+  }
+
+  if (q.includes('freelance')) {
+    return out(
+      "Sukhvant worked as a Freelance Full Stack Developer from January to December 2022. He delivered web projects using React.js, WordPress, Shopify, HTML, CSS, Bootstrap and Material UI, integrated APIs, implemented CRUD operations, and connected applications with SQL, Firebase, MongoDB and NeDB.",
+      ['Freelance Experience', 'Experience'],
+      'navigate-experience'
+    );
+  }
+
+  if (q.includes('oscarblack')) {
+    return out(
+      "Sukhvant was a UI/UX Developer Intern at Oscarblack Private Limited from April to October 2021. He developed frontend interfaces for shipping and logistics websites using HTML, CSS, Bootstrap, SCSS and React.js, worked with senior developers, and contributed to projects through deployment.",
+      ['Oscarblack Experience', 'Experience'],
       'navigate-experience'
     );
   }
@@ -524,7 +548,7 @@ function localAnswer(
     ])
   ) {
     return out(
-      "The portfolio records a 2-year full-time role at Brownfleet plus freelance/self-employed and internship experience. I wouldn't convert the mixed timelines into a larger number than the records explicitly support, but the profile clearly shows production experience across frontend, backend, SaaS and AI work.",
+      "Sukhvant's resume lists professional experience from April 2021 to May 2026 across an internship, freelance projects, and full-stack developer roles. The dates are shown role by role in the experience timeline rather than converted into a single rounded experience figure.",
       ['Experience']
     );
   }

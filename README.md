@@ -1,6 +1,6 @@
 <div align="center">
 
-# Sukhvant Singh — Full Stack Developer & AI Engineer
+# Sukhvant Singh — Full Stack Developer | Building Web Applications, AI Agents & AI-Powered Products
 
 **A recruiter-first developer portfolio with a built-in AI representative.**
 
@@ -71,7 +71,16 @@ without falsely claiming AWS experience, while still explaining how his backend,
 
 ## `./portfolio`
 
-The portfolio presents Sukhvant as a **Full Stack Developer & AI Engineer** with a focus on modern product engineering.
+The portfolio presents Sukhvant as a **Full Stack Developer** building web applications, AI agents and AI-powered products.
+
+### Professional experience
+
+| Organization | Role | Period |
+|---|---|---|
+| Brownfleet | Full Stack Developer | Jan 2024 – May 2026 |
+| MetaBRS | Full Stack Developer | Jan 2023 – Sep 2023 |
+| Freelance | Full Stack Developer | Jan 2022 – Dec 2022 |
+| Oscarblack Private Limited | UI/UX Developer Intern | Apr 2021 – Oct 2021 |
 
 ### Core areas
 
@@ -313,6 +322,6 @@ When changing the UI, preserve the core design language unless the change is exp
 
 ### Built to be explored. Built to be hired.
 
-**Sukhvant Singh · Full Stack Developer & AI Engineer**
+**Sukhvant Singh · Full Stack Developer**
 
 </div>

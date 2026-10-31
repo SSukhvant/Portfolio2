@@ -1,55 +1,71 @@
 import { ExperienceItem } from '../types';
 
+// Experience timeline aligned with the current resume.
+// Keep the displayed order chronological, newest role first.
 export const experienceData: ExperienceItem[] = [
-    {
-    id: "freelance",
-    company: "Freelance / Self-employed",
-    role: "Full Stack Developer",
-    period: "Recent / Ongoing",
-    location: "Global Remote",
-    type: "Contract",
-    commitHash: "7b13e04",
-    summary: "Built end-to-end web applications and bespoke digital platforms for clients across business, travel, non-profit, e-commerce, and marketing sectors.",
-    focus: ["React", "Next.js", "Node.js", "Express.js", "PostgreSQL", "MongoDB", "E-commerce", "Travel", "NGO"],
-    highlights: [
-      "Engineered full-stack business websites, e-commerce stores, and booking platforms with customized backends.",
-      "Developed high-impact NGO and digital marketing web applications optimized for speed, SEO, and user conversion.",
-      "Implemented payment gateways, authentication systems, and dynamic content management layers.",
-      "Maintained 100% on-time delivery record with clean, maintainable, and well-documented TypeScript codebases."
-    ]
-  },
   {
     id: "brownfleet",
     company: "Brownfleet",
     role: "Full Stack Developer",
-    period: "Full Time / 2 Years",
-    location: "Remote / Hybrid",
-    type: "Full-time",
+    period: "Jan 2024 – May 2026",
+    location: "",
+    type: "Professional",
     commitHash: "c8a41f9",
-    summary: "Engineering scalable AI-powered SaaS solutions, full-stack web applications, and backend systems utilizing modern TypeScript architectures.",
-    focus: ["Next.js", "TypeScript", "Node.js", "PostgreSQL", "AI-powered SaaS", "APIs", "MCP"],
+    summary: "Developed AI-powered web applications and full-stack product features using Next.js, React, TypeScript, Node.js, and Express.js.",
+    focus: ["Next.js", "React", "TypeScript", "Node.js", "Express.js", "PostgreSQL", "AI Agents", "RAG", "MCP"],
     highlights: [
-      "Architected and deployed full-stack SaaS features using Next.js and TypeScript for enterprise reliability.",
-      "Integrated AI workflows, LLM endpoints, and Model Context Protocol (MCP) tooling into production services.",
-      "Designed and optimized PostgreSQL database models and high-throughput REST APIs.",
-      "Collaborated on product engineering, performance profiling, and continuous deployment workflows."
+      "Developed AI-powered web applications using Next.js, React, TypeScript, Node.js, and Express.js.",
+      "Built AI agents and RAG-based applications and integrated AI capabilities into products and workflows.",
+      "Developed reusable frontend components, backend APIs, database integrations, and Supabase-powered services.",
+      "Explored Model Context Protocol (MCP), LLM integrations, and retrieval-augmented application patterns."
+    ]
+  },
+  {
+    id: "metabrs",
+    company: "MetaBRS",
+    role: "Full Stack Developer",
+    period: "Jan 2023 – Sep 2023",
+    location: "Noida, India",
+    type: "Professional",
+    commitHash: "a6d29c1",
+    summary: "Delivered web solutions for businesses and campaigns across tour and travel, NGOs, e-commerce, startups, and lead generation.",
+    focus: ["React.js", "Next.js", "Tailwind CSS", "Material UI", "WordPress", "Shopify", "API Integrations"],
+    highlights: [
+      "Developed web solutions for tour and travel, NGOs, businesses, e-commerce, startups, and lead-generation campaigns.",
+      "Built responsive applications using React.js, Next.js, Tailwind CSS, and Material UI.",
+      "Developed and customized WordPress and Shopify websites and integrated APIs and application functionality.",
+      "Contributed to the company website and digital products in a startup environment."
+    ]
+  },
+  {
+    id: "freelance",
+    company: "Freelance",
+    role: "Full Stack Developer",
+    period: "Jan 2022 – Dec 2022",
+    location: "Remote",
+    type: "Freelance",
+    commitHash: "7b13e04",
+    summary: "Delivered freelance web projects and client websites using modern frontend tools and popular content-management and commerce platforms.",
+    focus: ["React.js", "WordPress", "Shopify", "HTML", "CSS", "Bootstrap", "Material UI", "SQL", "Firebase", "MongoDB", "NeDB"],
+    highlights: [
+      "Delivered freelance web projects using React.js, WordPress, Shopify, HTML, CSS, Bootstrap, and Material UI.",
+      "Integrated APIs, implemented CRUD operations, and connected applications with SQL, Firebase, MongoDB, and NeDB."
     ]
   },
   {
     id: "oscarblack",
-    company: "OSCARBLACK",
-    role: "Front-End Developer Intern",
-    period: "Internship Period",
-    location: "Remote / Hybrid",
+    company: "Oscarblack Private Limited",
+    role: "UI/UX Developer Intern",
+    period: "Apr 2021 – Oct 2021",
+    location: "",
     type: "Internship",
     commitHash: "3f901a2",
-    summary: "Focused on crafting high-fidelity responsive user interfaces, modular styling architectures, and cross-browser frontend optimization.",
-    focus: ["Frontend Development", "Responsive Interfaces", "HTML5", "CSS3 / Modern CSS", "JavaScript"],
+    summary: "Developed frontend interfaces for shipping and logistics websites and gained hands-on experience from UI development through deployment.",
+    focus: ["HTML", "CSS", "Bootstrap", "SCSS", "React.js", "Responsive UI"],
     highlights: [
-      "Developed responsive, pixel-perfect user interface components across mobile, tablet, and desktop viewports.",
-      "Collaborated with senior engineers and UI/UX designers to translate design prototypes into production code.",
-      "Optimized assets and CSS rendering trees to eliminate layout shifts and improve load times.",
-      "Strengthened foundational web standards, semantic HTML, and accessibility compliance."
+      "Developed frontend interfaces for shipping and logistics websites using HTML, CSS, Bootstrap, SCSS, and React.js.",
+      "Worked with senior developers, learned React.js through projects, and gained experience from UI development through deployment.",
+      "Delivered multi-page websites under short timelines, including a four-page website in approximately two days."
     ]
   }
 ];

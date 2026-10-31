@@ -111,10 +111,12 @@ export const ExperienceSection: React.FC = () => {
                   <Calendar className="w-3.5 h-3.5 text-[#00873D] dark:text-[#00FF66]" />
                   <span className="text-[#333333] dark:text-[#A3A3A3]">{activeExp.period}</span>
                 </div>
-                <div className="flex items-center gap-1.5">
-                  <MapPin className="w-3.5 h-3.5 text-[#00873D] dark:text-[#00FF66]" />
-                  <span className="text-[#333333] dark:text-[#A3A3A3]">{activeExp.location}</span>
-                </div>
+                {activeExp.location && (
+                  <div className="flex items-center gap-1.5">
+                    <MapPin className="w-3.5 h-3.5 text-[#00873D] dark:text-[#00FF66]" />
+                    <span className="text-[#333333] dark:text-[#A3A3A3]">{activeExp.location}</span>
+                  </div>
+                )}
               </div>
 
               {/* Summary */}

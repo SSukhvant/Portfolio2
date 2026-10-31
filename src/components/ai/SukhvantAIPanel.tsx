@@ -96,7 +96,7 @@ export const SukhvantAIPanel: React.FC<SukhvantAIPanelProps> = ({ isOpen, onClos
     }
     onClose();
     if (lower.includes('project') || lower.includes('invoice') || lower.includes('saas') || lower.includes('careerloom')) onNavigateSection('projects');
-    else if (lower.includes('experience') || lower.includes('brownfleet') || lower.includes('oscarblack')) onNavigateSection('experience');
+    else if (lower.includes('experience') || lower.includes('brownfleet') || lower.includes('metabrs') || lower.includes('freelance') || lower.includes('oscarblack')) onNavigateSection('experience');
     else if (lower.includes('skill')) onNavigateSection('skills');
     else if (lower.includes('ai') || lower.includes('mcp')) onNavigateSection('ai-engineering');
     else if (lower.includes('contact')) onNavigateSection('contact');
