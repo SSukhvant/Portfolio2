@@ -94,7 +94,7 @@ export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose }) => 
               SUKHVANT SINGH
             </h1>
             <div className="text-xs text-[#00873D] dark:text-[#00FF66] font-mono font-medium">
-              Full Stack Developer & AI Engineer
+              Full Stack Developer | Building Web Applications, AI Agents & AI-Powered Products
             </div>
             <div className="text-[#666666] dark:text-[#8A8A8A] text-xs pt-1 font-mono">
               Email: {profileData.contactEmail} &bull; Availability: Full-Time / Contract Remote
