@@ -76,7 +76,7 @@ export const executeTerminalCommand = (
   if (lower === 'whoami') {
     return [
       { type: 'output', text: 'Sukhvant Singh' },
-      { type: 'output', text: 'Full Stack Developer & AI Engineer' },
+      { type: 'output', text: 'Full Stack Developer | AI-Powered Products' },
       { type: 'output', text: 'Specializing in React, Next.js, TypeScript, Node.js, PostgreSQL, AI Agents & MCP.' },
       {
         type: 'action',
@@ -177,7 +177,7 @@ export const executeTerminalCommand = (
   if (lower === 'status') {
     return [
       { type: 'success', text: '● Available for opportunities' },
-      { type: 'output', text: 'Open to Full Stack Developer, AI Engineer, and Product Engineering roles.' },
+      { type: 'output', text: 'Open to Full Stack Developer and AI product development roles.' },
       { type: 'output', text: 'Contact: sukhvantsingh581998@gmail.com' },
       {
         type: 'action',
@@ -204,7 +204,7 @@ export const executeTerminalCommand = (
   if (lower === 'resume' || lower === 'cv') {
     return [
       { type: 'output', text: '$ cat /resume.pdf' },
-      { type: 'output', text: 'Verified resume: Sukhvant Singh — Full Stack Developer & AI Engineer' },
+      { type: 'output', text: 'Verified resume: Sukhvant Singh — Full Stack Developer | AI-Powered Products' },
       {
         type: 'action',
         actionLabel: '→ View / Download Resume',
