@@ -485,7 +485,7 @@ function localAnswer(
     q === 'experience'
   ) {
     return out(
-      'Yes. Sukhvant's resume lists four professional engagements: Brownfleet (Full Stack Developer, Jan 2024–May 2026), MetaBRS (Full Stack Developer, Jan–Sep 2023), Freelance (Full Stack Developer, Jan–Dec 2022), and Oscarblack Private Limited (UI/UX Developer Intern, Apr–Oct 2021). Across these roles, he worked on web applications, responsive interfaces, APIs, databases, WordPress, Shopify, and AI-enabled product workflows.',
+      "Yes. Sukhvant's resume lists four professional engagements: Brownfleet (Full Stack Developer, Jan 2024–May 2026), MetaBRS (Full Stack Developer, Jan–Sep 2023), Freelance (Full Stack Developer, Jan–Dec 2022), and Oscarblack Private Limited (UI/UX Developer Intern, Apr–Oct 2021). Across these roles, he worked on web applications, responsive interfaces, APIs, databases, WordPress, Shopify, and AI-enabled product workflows.",
       ['Experience', 'Brownfleet Experience', 'OSCARBLACK Internship'],
       'navigate-experience'
     );
