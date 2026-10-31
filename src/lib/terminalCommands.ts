@@ -147,9 +147,10 @@ export const executeTerminalCommand = (
       {
         type: 'lines',
         lines: [
-          '  * c8a41f9 Brownfleet — Full Stack Developer (Next.js, TypeScript, AI SaaS, MCP)',
-          '  * 7b13e04 Freelance / Self-employed — Web & Full Stack Developer (Client Platforms)',
-          '  * 3f901a2 OSCARBLACK — Front-End Developer Intern (UI Architecture & Optimization)'
+          '  * c8a41f9 Brownfleet — Full Stack Developer (Jan 2024 – May 2026)',
+          '  * a6d29c1 MetaBRS — Full Stack Developer (Jan 2023 – Sep 2023)',
+          '  * 7b13e04 Freelance — Full Stack Developer (Jan 2022 – Dec 2022)',
+          '  * 3f901a2 Oscarblack Private Limited — UI/UX Developer Intern (Apr 2021 – Oct 2021)'
         ]
       },
       {
