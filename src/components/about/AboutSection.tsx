@@ -94,7 +94,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ onOpenAI, onScrollTo
               <div className="text-[#111111] dark:text-white font-medium">~/sukhvant</div>
               <div className="pl-3 border-l border-[#E5E7E5] dark:border-[#151A15] space-y-1">
                 <div>├── <span className="text-[#222222] dark:text-[#E5E5E5]">about.md</span> <span className="text-[#777777] dark:text-[#555555]">(biography)</span></div>
-                <div>├── <span className="text-[#222222] dark:text-[#E5E5E5]">experience.md</span> <span className="text-[#777777] dark:text-[#555555]">(brownfleet, freelance)</span></div>
+                <div>├── <span className="text-[#222222] dark:text-[#E5E5E5]">experience.md</span> <span className="text-[#777777] dark:text-[#555555]">(Brownfleet, MetaBRS, freelance, Oscarblack)</span></div>
                 <div>├── <span className="text-[#222222] dark:text-[#E5E5E5]">skills.json</span> <span className="text-[#777777] dark:text-[#555555]">(fullstack, ai)</span></div>
                 <div>
                   ├── <span className="text-[#111111] dark:text-white">projects/</span>
