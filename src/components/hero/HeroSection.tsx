@@ -41,12 +41,12 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                 <span className="text-[#00873D] dark:text-[#00FF66]">{`/>`}</span>
               </div>
               <h1 className="text-4xl sm:text-5xl md:text-6xl font-light tracking-tight text-[#111111] dark:text-[#FFFFFF] leading-[1.1]">
-                Full Stack & <br />
-                <span className="font-editorial-serif italic font-normal text-[#111111] dark:text-white">AI Engineer.</span>
+                Full Stack <br />
+                <span className="font-editorial-serif italic font-normal text-[#111111] dark:text-white">Developer.</span>
               </h1>
               <div className="font-mono-tech text-xs text-[#666666] dark:text-[#8A8A8A] tracking-widest uppercase flex items-center gap-2">
                 <span className="text-[#00873D] dark:text-[#00FF66]">&gt;</span>
-                <span>WEB APPLICATIONS • AGENTIC SYSTEMS • ARCHITECTURE</span>
+                <span>WEB APPLICATIONS • AI AGENTS • AI-POWERED PRODUCTS</span>
               </div>
             </div>
 
